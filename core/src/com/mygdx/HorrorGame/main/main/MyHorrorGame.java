@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.HorrorGame.main.handlers.GameStateManager;
+import com.mygdx.HorrorGame.main.handlers.MyInput;
+import com.mygdx.HorrorGame.main.handlers.MyInputProcessor;
 import com.mygdx.HorrorGame.main.states.GameState;
 
 public class MyHorrorGame extends ApplicationAdapter {
@@ -28,6 +30,12 @@ public class MyHorrorGame extends ApplicationAdapter {
 
     @Override
     public void create () {
+
+        Gdx.input.setInputProcessor(new MyInputProcessor()); // now the game uses the custom input processor
+
+
+
+
         sb = new SpriteBatch();
         cam = new OrthographicCamera();
         cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
@@ -45,6 +53,7 @@ public class MyHorrorGame extends ApplicationAdapter {
             accum -= STEP;
             gsm.update(STEP);
             gsm.render();
+            MyInput.update(); // updates the key strokes, what key is being pressed
         }
 
     }

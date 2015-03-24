@@ -11,6 +11,7 @@ import com.mygdx.HorrorGame.main.MyHorrorGame;
 import com.mygdx.HorrorGame.main.handlers.B2DVars;
 import com.mygdx.HorrorGame.main.handlers.GameStateManager;
 import com.mygdx.HorrorGame.main.handlers.MyContactListener;
+import com.mygdx.HorrorGame.main.handlers.MyInput;
 
 /**
  * Created by Kai on 3/11/2015.
@@ -109,7 +110,19 @@ public class Play extends GameState {
         b2dCam.setToOrtho(false, MyHorrorGame.V_WIDTH / PPM, MyHorrorGame.V_HEIGHT / PPM);
     }
 
-    public void handleInput() {}
+    public void handleInput() {
+
+        if(MyInput.isPressed(MyInput.BUTTON1)){
+            System.out.println("The Z key is pressed");
+        }
+        if(MyInput.isDown(MyInput.BUTTON2))
+        {
+            System.out.println("The x button is held down");
+
+        }
+
+
+    }
 
     public void render() {
         // Clear screen
@@ -121,7 +134,7 @@ public class Play extends GameState {
     }
 
     public void update(float dt) {
-
+        handleInput(); // checks the input
         // How often does the world check itself, and the other 2 parameters set it so
         // that it checks every so often in the world
         world.step(dt,6,2);
