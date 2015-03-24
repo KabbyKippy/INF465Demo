@@ -8,7 +8,8 @@ import com.badlogic.gdx.Input.Keys;
  */
 public class MyInputProcessor extends InputAdapter {
 
-    public boolean KeyDown(int k){
+    @Override
+    public boolean keyDown(int k){
 
         if ( k  == Keys.Z){
             MyInput.setKey(MyInput.BUTTON1 , true);
@@ -29,7 +30,8 @@ public class MyInputProcessor extends InputAdapter {
         return true;}
 
 
-    public boolean KeyUp(int k) {
+    @Override
+    public boolean keyUp(int k) {
         if ( k  == Keys.Z){
             MyInput.setKey(MyInput.BUTTON1 , false); //button is now unpressed
 

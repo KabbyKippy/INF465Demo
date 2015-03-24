@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class MyContactListener implements ContactListener{
 
 
-
+    private boolean playerOnGround;
    // Called when two fixtues start to collide with each other
     public void beginContact(Contact c){
 
@@ -16,7 +16,18 @@ public class MyContactListener implements ContactListener{
         Fixture fa = c.getFixtureA();
         Fixture fb = c.getFixtureB();
 
-        System.out.println( fa.getUserData() + "," + fb.getUserData()); // when you run this you see that fa is the ground and fb is the box then the ground
+        // determines if the player is on the ground
+        if(fa.getUserData() != null && fa.getUserData().equals("foot")){
+
+            playerOnGround = true;
+
+        }
+        if(fb.getUserData() != null && fb.getUserData().equals("foot")){
+
+            playerOnGround = true;
+
+        }
+        //.out.println( fa.getUserData() + "," + fb.getUserData()); // when you run this you see that fa is the ground and fb is the box then the ground
 
 
 
@@ -30,32 +41,26 @@ public class MyContactListener implements ContactListener{
     // called when two fixtures are no longer colliding with each other
     public void endContact(Contact c) {
 
+        Fixture fa = c.getFixtureA();
+        Fixture fb = c.getFixtureB();
 
+        // determines if the player is not on the ground
+        if(fa.getUserData() != null && fa.getUserData().equals("foot")){
 
+            playerOnGround = false;
 
+        }
+        if(fb.getUserData() != null && fb.getUserData().equals("foot")){
 
+            playerOnGround = false;
 
-
-
-
-
-
+        }
 
     }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+    public boolean isPlayerOnGround(){return playerOnGround;}
 
 
 

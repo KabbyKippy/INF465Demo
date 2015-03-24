@@ -4,7 +4,6 @@ import static com.mygdx.HorrorGame.main.handlers.B2DVars.PPM;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.HorrorGame.main.MyHorrorGame;
@@ -26,13 +25,16 @@ public class Play extends GameState {
 
     private OrthographicCamera b2dCam;
 
+    private Body playerBody;
+    private MyContactListener cl;
     public Play(GameStateManager gsm){
         super(gsm);
 
         // First parameter sets gravity up, 0 in the x direction, 9.81 m/s in the negative y direction
         // Second parameter sets the world up so that any body not active, is not account for.
-        world = new World(new Vector2(0, -1f), true);
-        world.setContactListener(new MyContactListener()); // males the world use the contact listener
+        world = new World(new Vector2(0, -9.81f), true);
+        cl = new MyContactListener(); //contact listener
+        world.setContactListener(cl); // males the world use the contact listener
         // ******************************************************
 
         //lowered gravity to see collision
@@ -64,7 +66,7 @@ public class Play extends GameState {
         fdef.filter.categoryBits = B2DVars.BIT_GROUND; // type of ground
         // the mask decides what the object can collide with
         // you must set collision for everything so if the ground collides with box then box has to collide with ground
-        fdef.filter.maskBits = B2DVars.BIT_BOX | B2DVars.BIT_BALL;
+        fdef.filter.maskBits = B2DVars.BIT_PLAYER;
         // if the mask is not specified it collides with everything
 
         Fixture fixture = body.createFixture(fdef);
@@ -73,11 +75,11 @@ public class Play extends GameState {
 
 
 
-        // Create a falling box
+        // Create a Player
 
         bdef.position.set(160 / PPM, 200 / PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
-        body = world.createBody(bdef);
+        playerBody = world.createBody(bdef);
 
         // Create the shape
         shape.setAsBox(5 / PPM ,5 / PPM);
@@ -85,11 +87,21 @@ public class Play extends GameState {
         // Create the fixture.
         fdef.shape = shape;
         fdef.restitution = 0f;
-        fdef.filter.categoryBits = B2DVars.BIT_BOX; // type of box
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
         fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
-        body.createFixture(fdef).setUserData("box"); // sets it as the box
+        playerBody.createFixture(fdef).setUserData("player"); // sets it as the box
 
 
+        // Create Foot Sensor creates the foot of the player
+        shape.setAsBox(2 / PPM , 2/ PPM, new Vector2(0, (-5/PPM)), 0); //moves the foot lower than the player
+        fdef.shape = shape;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
+        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        fdef.isSensor = true; // makes the foot a sensor  "ghost fixure" it passes through things its a fixture other things can pass through but it detects collisions
+        playerBody.createFixture(fdef).setUserData("foot");
+
+
+/*  Test of the ball
         // create ball
         bdef.position.set(153 / PPM, 220 / PPM);
         body = world.createBody(bdef);
@@ -101,6 +113,7 @@ public class Play extends GameState {
         fdef.filter.maskBits = B2DVars.BIT_GROUND; // collides with ground
         body.createFixture(fdef).setUserData("ball"); //sets it as the ball
 
+*/
 
 
 
@@ -112,6 +125,20 @@ public class Play extends GameState {
 
     public void handleInput() {
 
+        // player jump
+        if(MyInput.isPressed(MyInput.BUTTON1)){
+            if(cl.isPlayerOnGround()){ //check to see if the foot is acutally on the ground
+                playerBody.applyForceToCenter(0, 200, true); // the player can jump a force of 200N upwards
+
+
+
+            }
+        }
+
+
+
+
+/* Test to see that the input works
         if(MyInput.isPressed(MyInput.BUTTON1)){
             System.out.println("The Z key is pressed");
         }
@@ -122,6 +149,9 @@ public class Play extends GameState {
         }
 
 
+
+
+*/
     }
 
     public void render() {
