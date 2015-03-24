@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.HorrorGame.main.MyHorrorGame;
+import com.mygdx.HorrorGame.main.handlers.B2DVars;
 import com.mygdx.HorrorGame.main.handlers.GameStateManager;
+import com.mygdx.HorrorGame.main.handlers.MyContactListener;
 
 /**
  * Created by Kai on 3/11/2015.
@@ -28,7 +30,13 @@ public class Play extends GameState {
 
         // First parameter sets gravity up, 0 in the x direction, 9.81 m/s in the negative y direction
         // Second parameter sets the world up so that any body not active, is not account for.
-        world = new World(new Vector2(0, -9.81f), true);
+        world = new World(new Vector2(0, -1f), true);
+        world.setContactListener(new MyContactListener()); // males the world use the contact listener
+        // ******************************************************
+
+        //lowered gravity to see collision
+
+        //********************************************************
 
         b2dr = new Box2DDebugRenderer();
 
@@ -52,7 +60,17 @@ public class Play extends GameState {
         // Create fixtures
         FixtureDef fdef = new FixtureDef();
         fdef.shape = shape;
-        body.createFixture(fdef);
+        fdef.filter.categoryBits = B2DVars.BIT_GROUND; // type of ground
+        // the mask decides what the object can collide with
+        // you must set collision for everything so if the ground collides with box then box has to collide with ground
+        fdef.filter.maskBits = B2DVars.BIT_BOX | B2DVars.BIT_BALL;
+        // if the mask is not specified it collides with everything
+
+        Fixture fixture = body.createFixture(fdef);
+        fixture.setUserData("ground"); // gives the ground  fixture user data a way to identify it as the ground
+
+
+
 
         // Create a falling box
 
@@ -65,8 +83,27 @@ public class Play extends GameState {
 
         // Create the fixture.
         fdef.shape = shape;
-        fdef.restitution = .99f;
-        body.createFixture(fdef);
+        fdef.restitution = 0f;
+        fdef.filter.categoryBits = B2DVars.BIT_BOX; // type of box
+        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        body.createFixture(fdef).setUserData("box"); // sets it as the box
+
+
+        // create ball
+        bdef.position.set(153 / PPM, 220 / PPM);
+        body = world.createBody(bdef);
+        CircleShape cshape = new CircleShape();
+        cshape.setRadius(5 / PPM); // size radius of 5
+        fdef.shape = cshape;
+        //fdef.restitution = 0.2f; // makes the ball bounce
+        fdef.filter.categoryBits = B2DVars.BIT_BALL; // type definition
+        fdef.filter.maskBits = B2DVars.BIT_GROUND; // collides with ground
+        body.createFixture(fdef).setUserData("ball"); //sets it as the ball
+
+
+
+
+
 
         b2dCam = new OrthographicCamera();
         b2dCam.setToOrtho(false, MyHorrorGame.V_WIDTH / PPM, MyHorrorGame.V_HEIGHT / PPM);
