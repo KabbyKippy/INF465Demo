@@ -22,7 +22,6 @@ import com.mygdx.HorrorGame.main.handlers.B2DVars;
 import com.mygdx.HorrorGame.main.handlers.GameStateManager;
 import com.mygdx.HorrorGame.main.handlers.MyContactListener;
 import com.mygdx.HorrorGame.main.handlers.MyInput;
-import com.sun.javafx.sg.BackgroundImage;
 
 /**
  * Created by Kai on 3/11/2015.
