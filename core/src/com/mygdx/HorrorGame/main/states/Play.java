@@ -260,7 +260,7 @@ public class Play extends GameState {
                 );
 
                 cs.createChain(v);
-                fdef.friction = .2f;
+                fdef.friction = .5f;
                 fdef.shape = cs;
                 fdef.filter.categoryBits = bits;
                 fdef.filter.maskBits = B2DVars.BIT_PLAYER;
