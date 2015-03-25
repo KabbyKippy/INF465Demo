@@ -1,16 +1,28 @@
 package com.mygdx.HorrorGame.main.states;
 
 import static com.mygdx.HorrorGame.main.handlers.B2DVars.PPM;
+
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.HorrorGame.main.MyHorrorGame;
+import com.mygdx.HorrorGame.main.TileMap.BackGround;
+import com.mygdx.HorrorGame.main.entities.Player;
 import com.mygdx.HorrorGame.main.handlers.B2DVars;
 import com.mygdx.HorrorGame.main.handlers.GameStateManager;
 import com.mygdx.HorrorGame.main.handlers.MyContactListener;
 import com.mygdx.HorrorGame.main.handlers.MyInput;
+import com.sun.javafx.sg.BackgroundImage;
 
 /**
  * Created by Kai on 3/11/2015.
@@ -25,8 +37,16 @@ public class Play extends GameState {
 
     private OrthographicCamera b2dCam;
 
-    private Body playerBody;
     private MyContactListener cl;
+
+    private float tileSize;
+    private TiledMap tileMap;
+    private OrthogonalTiledMapRenderer tmr;
+
+    private Player player;
+
+    private BackGround[] backgrounds;
+
     public Play(GameStateManager gsm){
         super(gsm);
 
@@ -37,83 +57,23 @@ public class Play extends GameState {
         world.setContactListener(cl); // males the world use the contact listener
         // ******************************************************
 
-        //lowered gravity to see collision
 
-        //********************************************************
+        // Create player
+        createPlayer();
+
+        // Create tiles
+        createTiles();
 
         b2dr = new Box2DDebugRenderer();
 
-        // Create platform
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(160 / PPM ,120 / PPM);
-        bdef.type = BodyDef.BodyType.StaticBody;
-        Body body = world.createBody(bdef);
-
-        // 3 types of bodies
-        // Static body - don't move, unaffected by forces
-        // kinematic body - don't get affected by the world forces, but their velocities can change
-        // dynamic body - always get affected by forces
-        // The ground is a static body, the player is a dynamic body, and a moving platform is a kinematic body
-
-        // Create a new shape
-        PolygonShape shape = new PolygonShape();
-        // This will make it so it's 100 by 10, it's half the size.
-        shape.setAsBox(50 / PPM,5 / PPM);
-
-        // Create fixtures
-        FixtureDef fdef = new FixtureDef();
-        fdef.shape = shape;
-        fdef.filter.categoryBits = B2DVars.BIT_GROUND; // type of ground
-        // the mask decides what the object can collide with
-        // you must set collision for everything so if the ground collides with box then box has to collide with ground
-        fdef.filter.maskBits = B2DVars.BIT_PLAYER;
-        // if the mask is not specified it collides with everything
-
-        Fixture fixture = body.createFixture(fdef);
-        fixture.setUserData("ground"); // gives the ground  fixture user data a way to identify it as the ground
-
-
-
-
-        // Create a Player
-
-        bdef.position.set(160 / PPM, 200 / PPM);
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        playerBody = world.createBody(bdef);
-
-        // Create the shape
-        shape.setAsBox(5 / PPM ,5 / PPM);
-
-        // Create the fixture.
-        fdef.shape = shape;
-        fdef.restitution = 0f;
-        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
-        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
-        playerBody.createFixture(fdef).setUserData("player"); // sets it as the box
-
-
-        // Create Foot Sensor creates the foot of the player
-        shape.setAsBox(2 / PPM , 2/ PPM, new Vector2(0, (-5/PPM)), 0); //moves the foot lower than the player
-        fdef.shape = shape;
-        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
-        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
-        fdef.isSensor = true; // makes the foot a sensor  "ghost fixure" it passes through things its a fixture other things can pass through but it detects collisions
-        playerBody.createFixture(fdef).setUserData("foot");
-
-
-/*  Test of the ball
-        // create ball
-        bdef.position.set(153 / PPM, 220 / PPM);
-        body = world.createBody(bdef);
-        CircleShape cshape = new CircleShape();
-        cshape.setRadius(5 / PPM); // size radius of 5
-        fdef.shape = cshape;
-        //fdef.restitution = 0.2f; // makes the ball bounce
-        fdef.filter.categoryBits = B2DVars.BIT_BALL; // type definition
-        fdef.filter.maskBits = B2DVars.BIT_GROUND; // collides with ground
-        body.createFixture(fdef).setUserData("ball"); //sets it as the ball
-
-*/
+        Texture bgs = new Texture("Resources/Backgrounds/bgs.png");
+        TextureRegion sky = new TextureRegion(bgs, 0, 0, 320, 240);
+        TextureRegion clouds = new TextureRegion(bgs, 0, 240, 320, 240);
+        TextureRegion mountains = new TextureRegion(bgs, 0, 480, 320, 240);
+        backgrounds = new BackGround[3];
+        backgrounds[0] = new BackGround(sky, cam, 0f);
+        backgrounds[1] = new BackGround(clouds, cam, 0.1f);
+        backgrounds[2] = new BackGround(mountains, cam, 0.2f);
 
 
 
@@ -121,6 +81,10 @@ public class Play extends GameState {
 
         b2dCam = new OrthographicCamera();
         b2dCam.setToOrtho(false, MyHorrorGame.V_WIDTH / PPM, MyHorrorGame.V_HEIGHT / PPM);
+
+        //////////////////////////////////////////////////////////////////////
+
+
     }
 
     public void handleInput() {
@@ -128,12 +92,24 @@ public class Play extends GameState {
         // player jump
         if(MyInput.isPressed(MyInput.BUTTON1)){
             if(cl.isPlayerOnGround()){ //check to see if the foot is acutally on the ground
-                playerBody.applyForceToCenter(0, 200, true); // the player can jump a force of 200N upwards
+                player.getBody().applyForceToCenter(0, 200, true); // the player can jump a force of 200N upwards
 
 
 
             }
         }
+        // Player run left
+        if(MyInput.isDown(MyInput.BUTTON2)){
+            player.getBody().applyForceToCenter(-5, 0, true);
+
+        }
+
+        // Player run right
+        if(MyInput.isDown(MyInput.BUTTON3)){
+            player.getBody().applyForceToCenter(5, 0, true);
+
+        }
+
 
 
 
@@ -158,6 +134,21 @@ public class Play extends GameState {
         // Clear screen
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // draw bgs
+        sb.setProjectionMatrix(hudCam.combined);
+        for(int i = 0; i < backgrounds.length; i++) {
+            backgrounds[i].render(sb);
+        }
+
+        // draw Tile map
+        tmr.setView(cam);
+        tmr.render();
+
+        // draw player
+        sb.setProjectionMatrix(cam.combined);
+        player.render(sb);
+
+
         // Draw the box2d world.
         // Render the bodies in the world, using the cam.
         b2dr.render(world, b2dCam.combined);
@@ -168,8 +159,116 @@ public class Play extends GameState {
         // How often does the world check itself, and the other 2 parameters set it so
         // that it checks every so often in the world
         world.step(dt,6,2);
+
+        player.update(dt);
     }
 
     @Override
     public void dispose() {}
+
+    public void createPlayer(){
+
+        BodyDef bdef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+
+        // Create a Player
+
+        bdef.position.set(160 / PPM, 200 / PPM);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        Body body = world.createBody(bdef);
+
+        // Create the shape
+        shape.setAsBox(17/ PPM ,17 / PPM);
+
+        // Create the fixture.
+        fdef.shape = shape;
+        fdef.restitution = 0f;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
+        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        body.createFixture(fdef).setUserData("player"); // sets it as the box
+
+
+        // Create Foot Sensor creates the foot of the player
+        shape.setAsBox(17 / PPM , 17/ PPM, new Vector2(0, (-17/PPM)), 0); //moves the foot lower than the player
+        fdef.shape = shape;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
+        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        fdef.isSensor = true; // makes the foot a sensor  "ghost fixure" it passes through things its a fixture other things can pass through but it detects collisions
+        body.createFixture(fdef).setUserData("foot");
+
+        // create Player
+
+        player = new Player(body);
+
+    }
+
+    public void createTiles(){
+
+        // Load tile map
+        tileMap = new TmxMapLoader().load("Resources/Maps/Level1Demov2.tmx");
+        tmr = new OrthogonalTiledMapRenderer(tileMap);
+
+        // Get this layer
+        TiledMapTileLayer layer = (TiledMapTileLayer) tileMap.getLayers().get("Tile Layer 1");
+        tileSize = layer.getTileWidth();
+
+        createLayer(layer, B2DVars.BIT_GROUND);
+
+
+    }
+
+    private void createLayer(TiledMapTileLayer layer, short bits){
+
+        BodyDef bdef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+
+        // rows y direction, cols x direction
+        for(int row = 0; row < layer.getHeight(); row++){
+            for(int col = 0; col < layer.getWidth(); col++)
+            {
+                // Start creating bodies for each tiled
+                // Get the cell
+                TiledMapTileLayer.Cell cell = layer.getCell(col,row);
+
+                // Check if cell exists
+                if(cell == null) continue;
+                if(cell.getTile() == null) continue;
+
+                // Create a body + fixture from cell
+                bdef.type = BodyDef.BodyType.StaticBody;
+
+                bdef.position.set(
+                        (col+0.5f) * tileSize / PPM,
+                        (row+0.5f) * tileSize / PPM
+                );
+
+                ChainShape cs = new ChainShape();
+                Vector2[] v = new Vector2[4];
+
+                v[0] = new Vector2(
+                        -tileSize / 2/ PPM, -tileSize / 2 / PPM
+                );
+                v[1] = new Vector2(
+                        -tileSize / 2/ PPM, tileSize / 2 / PPM
+                );
+                v[2] = new Vector2(
+                        tileSize / 2/ PPM, tileSize / 2 / PPM
+                );
+                v[3] = new Vector2(
+                        tileSize / 2/ PPM, -tileSize / 2 / PPM
+                );
+
+                cs.createChain(v);
+                fdef.friction = .2f;
+                fdef.shape = cs;
+                fdef.filter.categoryBits = bits;
+                fdef.filter.maskBits = B2DVars.BIT_PLAYER;
+                fdef.isSensor = false;
+
+                world.createBody(bdef).createFixture(fdef);
+
+            }
+        }
+    }
 }

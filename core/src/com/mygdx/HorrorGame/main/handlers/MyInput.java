@@ -8,9 +8,10 @@ public class MyInput {
     public static boolean[] keys;
     public static boolean[] pkeys;
 
-    public static final int NUM_KEYS = 2; // number of buttons
+    public static final int NUM_KEYS = 3; // number of buttons
     public static final int BUTTON1 = 0; // first button
     public static final int BUTTON2 = 1; // second button
+    public static final int BUTTON3 = 2; // third button
 
     static {
 

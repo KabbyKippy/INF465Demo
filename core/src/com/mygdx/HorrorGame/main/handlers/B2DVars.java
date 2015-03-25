@@ -10,8 +10,8 @@ public class B2DVars {
 
     // category bits ... this decides what collides with what
     // these values decide what the object is considered so the ground is considered to be an object of type 2.. etc
-    public static final short BIT_GROUND = 2;
-    public static final short BIT_PLAYER = 4;
+    public static final short BIT_PLAYER = 2;
+    public static final short BIT_GROUND = 4;
   // the ball got removed  public static final short BIT_BALL = 8;
 /*
  Try not to use the default which is 1

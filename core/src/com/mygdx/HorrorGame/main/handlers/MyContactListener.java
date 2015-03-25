@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class MyContactListener implements ContactListener{
 
 
-    private boolean playerOnGround;
+    private int numFootContact;
    // Called when two fixtues start to collide with each other
     public void beginContact(Contact c){
 
@@ -19,12 +19,12 @@ public class MyContactListener implements ContactListener{
         // determines if the player is on the ground
         if(fa.getUserData() != null && fa.getUserData().equals("foot")){
 
-            playerOnGround = true;
+            numFootContact++;
 
         }
         if(fb.getUserData() != null && fb.getUserData().equals("foot")){
 
-            playerOnGround = true;
+            numFootContact++;
 
         }
         //.out.println( fa.getUserData() + "," + fb.getUserData()); // when you run this you see that fa is the ground and fb is the box then the ground
@@ -47,12 +47,12 @@ public class MyContactListener implements ContactListener{
         // determines if the player is not on the ground
         if(fa.getUserData() != null && fa.getUserData().equals("foot")){
 
-            playerOnGround = false;
+            numFootContact--;
 
         }
         if(fb.getUserData() != null && fb.getUserData().equals("foot")){
 
-            playerOnGround = false;
+            numFootContact--;
 
         }
 
@@ -60,7 +60,7 @@ public class MyContactListener implements ContactListener{
 
 
 
-    public boolean isPlayerOnGround(){return playerOnGround;}
+    public boolean isPlayerOnGround(){return numFootContact > 0;}
 
 
 

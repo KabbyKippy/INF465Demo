@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.HorrorGame.main.handlers.Content;
 import com.mygdx.HorrorGame.main.handlers.GameStateManager;
 import com.mygdx.HorrorGame.main.handlers.MyInput;
 import com.mygdx.HorrorGame.main.handlers.MyInputProcessor;
@@ -28,13 +29,18 @@ public class MyHorrorGame extends ApplicationAdapter {
 
     private GameStateManager gsm;
 
+    public static Content res;
+
     @Override
     public void create () {
+
 
         Gdx.input.setInputProcessor(new MyInputProcessor()); // now the game uses the custom input processor
 
 
-
+        // USED TO GRAB TEXTURES
+        res = new Content();
+        res.loadTexture("Resources/Sprites/Player/PlayerSprites.gif", "PlayerWalk");
 
         sb = new SpriteBatch();
         cam = new OrthographicCamera();
@@ -55,6 +61,8 @@ public class MyHorrorGame extends ApplicationAdapter {
             gsm.render();
             MyInput.update(); // updates the key strokes, what key is being pressed
         }
+
+
 
     }
 
