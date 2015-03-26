@@ -40,7 +40,8 @@ public class MyHorrorGame extends ApplicationAdapter {
 
         // USED TO GRAB TEXTURES
         res = new Content();
-        res.loadTexture("Resources/Sprites/Player/PlayerWalkAnimationLeft.png", "PlayerWalk");
+        res.loadTexture("Resources/Sprites/Player/StandbyRight.png", "PlayerIdle");
+        res.loadTexture("Resources/Sprites/Player/PlayerWalkAnimationLeft.png", "PlayerWalkLeft");
 
         sb = new SpriteBatch();
         cam = new OrthographicCamera();

@@ -46,6 +46,8 @@ public class Play extends GameState {
 
     private BackGround[] backgrounds;
 
+
+
     public Play(GameStateManager gsm){
         super(gsm);
 
@@ -82,6 +84,8 @@ public class Play extends GameState {
         b2dCam.setToOrtho(false, MyHorrorGame.V_WIDTH / PPM, MyHorrorGame.V_HEIGHT / PPM);
 
         //////////////////////////////////////////////////////////////////////
+
+
 
 
     }
@@ -133,6 +137,13 @@ public class Play extends GameState {
         // Clear screen
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+        // Set Camera To follow player
+        cam.position.set(player.getPosition().x * PPM + MyHorrorGame.V_WIDTH/4 ,MyHorrorGame.V_HEIGHT/2,0);
+        cam.update();
+
+
+
         // draw bgs
         sb.setProjectionMatrix(hudCam.combined);
         for(int i = 0; i < backgrounds.length; i++) {
@@ -150,7 +161,8 @@ public class Play extends GameState {
 
         // Draw the box2d world.
         // Render the bodies in the world, using the cam.
-        b2dr.render(world, b2dCam.combined);
+        // This lets you see the blocks
+        //b2dr.render(world, b2dCam.combined);
     }
 
     public void update(float dt) {
@@ -175,10 +187,11 @@ public class Play extends GameState {
 
         bdef.position.set(160 / PPM, 200 / PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
+        //bdef.linearVelocity.set(2,0);
         Body body = world.createBody(bdef);
 
         // Create the shape
-        shape.setAsBox(17/ PPM ,17 / PPM);
+        shape.setAsBox(10/ PPM ,17 / PPM);
 
         // Create the fixture.
         fdef.shape = shape;
@@ -189,16 +202,19 @@ public class Play extends GameState {
 
 
         // Create Foot Sensor creates the foot of the player
-        shape.setAsBox(17 / PPM , 17/ PPM, new Vector2(0, (-17/PPM)), 0); //moves the foot lower than the player
+        shape.setAsBox(8 / PPM , 10/ PPM, new Vector2((-1/PPM), (-15/PPM)), 0); //moves the foot lower than the player
         fdef.shape = shape;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
         fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
         fdef.isSensor = true; // makes the foot a sensor  "ghost fixure" it passes through things its a fixture other things can pass through but it detects collisions
         body.createFixture(fdef).setUserData("foot");
 
+
+
         // create Player
 
         player = new Player(body);
+        body.setUserData(player);
 
     }
 
