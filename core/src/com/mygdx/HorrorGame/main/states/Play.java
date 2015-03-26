@@ -139,7 +139,7 @@ public class Play extends GameState {
 
 
         // Set Camera To follow player
-        cam.position.set(player.getPosition().x * PPM + MyHorrorGame.V_WIDTH/4 ,MyHorrorGame.V_HEIGHT/2,0);
+        cam.position.set(player.getPosition().x * PPM + MyHorrorGame.V_WIDTH/4 ,player.getPosition().y * PPM + MyHorrorGame.V_WIDTH/100,0);//MyHorrorGame.V_HEIGHT/2,0);
         cam.update();
 
 
@@ -185,7 +185,8 @@ public class Play extends GameState {
 
         // Create a Player
 
-        bdef.position.set(160 / PPM, 200 / PPM);
+        bdef.position.set(100 / PPM, 600 / PPM);
+
         bdef.type = BodyDef.BodyType.DynamicBody;
         //bdef.linearVelocity.set(2,0);
         Body body = world.createBody(bdef);
@@ -221,7 +222,7 @@ public class Play extends GameState {
     public void createTiles(){
 
         // Load tile map
-        tileMap = new TmxMapLoader().load("Resources/Maps/Level1Demov2.tmx");
+        tileMap = new TmxMapLoader().load("Resources/Maps/Level1Demo.tmx");
         tmr = new OrthogonalTiledMapRenderer(tileMap);
 
         // Get this layer

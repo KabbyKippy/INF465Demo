@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="80" height="16" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="50" tilewidth="16" tileheight="16" nextobjectid="1">
  <tileset firstgid="1" name="platTileSet" tilewidth="16" tileheight="16" spacing="2">
   <image source="platTileSet.png" width="256" height="144"/>
  </tileset>
- <layer name="Tile Layer 1" width="80" height="16">
+ <layer name="Tile Layer 1" width="150" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt0LENABAQAMAnemJF++9AYQKNfHLFLXA9IuaxeNL9+fOXlj9//vLy589fXv78+curHJVn42rwwQbq3I0W
+   eJzt21tqg0AYgFEpSh+bPnQF7Vu6iayl+99DK2TADipeZryM58CPkJig5DOBSVJV23gdGQhuz3mfuP8j47FQDl2Rg65I6RaNrugTdzJ35nT1OTJfSc5mupedp3Shj6WPm9rV0ay9ntZO6XSlqxyOfp73v/nubEvws/cBbODoXcVK7KxEZ+uKc6irc3d1j8Z72DG0XTV7HwTFOVpXTc+M3Td32IauyKHb1WNg+vZv161SrV9NbUFX5xE6aedjYOpov3ZCU7oipe56+9LvyOa2kLIr3w8eU2iq3dYLZs7jgvj20MrU52lGniv1dM+vibbdc+K/0FXu1ydlC6m7iq+NJdcK2xr6HIQ1dEUOuiIHXZGDrshBV+SQuyvrote0dL19qrfn+H37tcxtZUlX/jdxPbm74pr8XgEAAAAAAAAAAAAA4Fp+AX3jGmg=
   </data>
  </layer>
 </map>
