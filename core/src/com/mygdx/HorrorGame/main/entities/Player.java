@@ -35,12 +35,28 @@ public class Player extends B2DSprite {
 
          */
 
+    }
+
+    public void update(float dt){
+        animation.update(dt);
+
+        if(MyInput.isPressed(MyInput.BUTTON1)){
+        System.out.println("I'm jumping");}
+
+        if(MyInput.isPressed(MyInput.BUTTON2)){
+            System.out.println("I'm walking left");
+
+            Texture  tex = MyHorrorGame.res.getTexture("PlayerWalkLeft");
+
+            TextureRegion[] sprites = TextureRegion.split(tex, 40, 40)[0];
+
+            setAnimation(sprites, 1 / 12f);
 
 
+        }
 
-
-
-
+        if(MyInput.isDown(MyInput.BUTTON3)){
+            System.out.println("I'm walking right");}
 
     }
 

@@ -67,14 +67,14 @@ public class Play extends GameState {
 
         b2dr = new Box2DDebugRenderer();
 
-        Texture bgs = new Texture("Resources/Backgrounds/bgs.png");
+        /*Texture bgs = new Texture("Resources/Backgrounds/bgs.png");
         TextureRegion sky = new TextureRegion(bgs, 0, 0, 320, 240);
         TextureRegion clouds = new TextureRegion(bgs, 0, 240, 320, 240);
         TextureRegion mountains = new TextureRegion(bgs, 0, 480, 320, 240);
         backgrounds = new BackGround[3];
         backgrounds[0] = new BackGround(sky, cam, 0f);
         backgrounds[1] = new BackGround(clouds, cam, 0.1f);
-        backgrounds[2] = new BackGround(mountains, cam, 0.2f);
+        backgrounds[2] = new BackGround(mountains, cam, 0.2f);*/
 
 
 
@@ -95,23 +95,30 @@ public class Play extends GameState {
         // player jump
         if(MyInput.isPressed(MyInput.BUTTON1)){
             if(cl.isPlayerOnGround()){ //check to see if the foot is acutally on the ground
-                player.getBody().applyForceToCenter(0, 200, true); // the player can jump a force of 200N upwards
-
+                player.getBody().applyForceToCenter(0, 225, true); // the player can jump a force of 200N upwards
 
 
             }
         }
         // Player run left
         if(MyInput.isDown(MyInput.BUTTON2)){
-            player.getBody().applyForceToCenter(-5, 0, true);
+            if(cl.isPlayerOnGround())
+            player.getBody().applyForceToCenter(-8, 0, true);
+
+            else
+                player.getBody().applyForceToCenter(-2, 0, true);
 
         }
 
         // Player run right
         if(MyInput.isDown(MyInput.BUTTON3)){
-            player.getBody().applyForceToCenter(5, 0, true);
+            if(cl.isPlayerOnGround())
+            player.getBody().applyForceToCenter(8, 0, true);
 
-        }
+            else
+                player.getBody().applyForceToCenter(2, 0, true);
+
+    }
 
 
 
@@ -145,10 +152,10 @@ public class Play extends GameState {
 
 
         // draw bgs
-        sb.setProjectionMatrix(hudCam.combined);
+        /*sb.setProjectionMatrix(hudCam.combined);
         for(int i = 0; i < backgrounds.length; i++) {
             backgrounds[i].render(sb);
-        }
+        }*/
 
         // draw Tile map
         tmr.setView(cam);
@@ -276,7 +283,7 @@ public class Play extends GameState {
                 );
 
                 cs.createChain(v);
-                fdef.friction = .5f;
+                fdef.friction = .8f;
                 fdef.shape = cs;
                 fdef.filter.categoryBits = bits;
                 fdef.filter.maskBits = B2DVars.BIT_PLAYER;
