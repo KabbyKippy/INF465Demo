@@ -106,7 +106,7 @@ public class Play extends GameState {
             player.getBody().applyForceToCenter(-8, 0, true);
 
             else
-                player.getBody().applyForceToCenter(-2, 0, true);
+                player.getBody().applyForceToCenter(-1, 0, true);
 
         }
 
@@ -116,7 +116,7 @@ public class Play extends GameState {
             player.getBody().applyForceToCenter(8, 0, true);
 
             else
-                player.getBody().applyForceToCenter(2, 0, true);
+                player.getBody().applyForceToCenter(1, 0, true);
 
     }
 
