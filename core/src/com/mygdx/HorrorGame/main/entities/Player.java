@@ -41,6 +41,17 @@ public class Player extends B2DSprite {
         animation.update(dt);
 
         if(MyInput.isPressed(MyInput.BUTTON1)){
+
+            Texture  tex = MyHorrorGame.res.getTexture("PlayerIdle");
+
+            TextureRegion[] sprites = TextureRegion.split(tex, 40, 40)[0];
+
+            setAnimation(sprites, 1 / 12f);
+
+
+
+
+
         System.out.println("I'm jumping");}
 
         if(MyInput.isPressed(MyInput.BUTTON2)){
@@ -55,8 +66,20 @@ public class Player extends B2DSprite {
 
         }
 
-        if(MyInput.isDown(MyInput.BUTTON3)){
+        if(MyInput.isPressed(MyInput.BUTTON3)){
+            Texture  tex = MyHorrorGame.res.getTexture("PlayerWalkRight");
+
+            TextureRegion[] sprites = TextureRegion.split(tex, 40, 40)[0];
+
+            setAnimation(sprites, 1 / 12f);
+
             System.out.println("I'm walking right");}
+
+
+
+
+
+
 
     }
 
