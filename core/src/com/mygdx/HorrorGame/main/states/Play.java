@@ -103,20 +103,20 @@ public class Play extends GameState {
         // Player run left
         if(MyInput.isDown(MyInput.BUTTON2)){
             if(cl.isPlayerOnGround())
-            player.getBody().applyForceToCenter(-8, 0, true);
+            player.getBody().applyForceToCenter(-6, 0, true);
 
             else
-                player.getBody().applyForceToCenter(-1, 0, true);
+                player.getBody().applyForceToCenter(-3, 0, true);
 
         }
 
         // Player run right
         if(MyInput.isDown(MyInput.BUTTON3)){
             if(cl.isPlayerOnGround())
-            player.getBody().applyForceToCenter(8, 0, true);
+            player.getBody().applyForceToCenter(6, 0, true);
 
             else
-                player.getBody().applyForceToCenter(1, 0, true);
+                player.getBody().applyForceToCenter(3, 0, true);
 
     }
 
@@ -191,8 +191,8 @@ public class Play extends GameState {
         PolygonShape shape = new PolygonShape();
 
         // Create a Player
-
-        bdef.position.set(100 / PPM, 600 / PPM);
+        // Player spawn position
+        bdef.position.set(175 / PPM, 1360 / PPM);
 
         bdef.type = BodyDef.BodyType.DynamicBody;
         //bdef.linearVelocity.set(2,0);
@@ -283,6 +283,7 @@ public class Play extends GameState {
                 );
 
                 cs.createChain(v);
+                //  Where you change friction
                 fdef.friction = .8f;
                 fdef.shape = cs;
                 fdef.filter.categoryBits = bits;
