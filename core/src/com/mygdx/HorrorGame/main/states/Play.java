@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.HorrorGame.main.MyHorrorGame;
 import com.mygdx.HorrorGame.main.TileMap.BackGround;
 import com.mygdx.HorrorGame.main.entities.Player;
+import com.mygdx.HorrorGame.main.entities.enemybat;
 import com.mygdx.HorrorGame.main.handlers.B2DVars;
 import com.mygdx.HorrorGame.main.handlers.GameStateManager;
 import com.mygdx.HorrorGame.main.handlers.MyContactListener;
@@ -43,8 +44,11 @@ public class Play extends GameState {
     private OrthogonalTiledMapRenderer tmr;
 
     private Player player;
+    private enemybat bat1;
 
     private BackGround[] backgrounds;
+
+    public static boolean onGround;
 
 
 
@@ -61,20 +65,13 @@ public class Play extends GameState {
 
         // Create player
         createPlayer();
+        createenemy();
 
         // Create tiles
         createTiles();
 
         b2dr = new Box2DDebugRenderer();
 
-        /*Texture bgs = new Texture("Resources/Backgrounds/bgs.png");
-        TextureRegion sky = new TextureRegion(bgs, 0, 0, 320, 240);
-        TextureRegion clouds = new TextureRegion(bgs, 0, 240, 320, 240);
-        TextureRegion mountains = new TextureRegion(bgs, 0, 480, 320, 240);
-        backgrounds = new BackGround[3];
-        backgrounds[0] = new BackGround(sky, cam, 0f);
-        backgrounds[1] = new BackGround(clouds, cam, 0.1f);
-        backgrounds[2] = new BackGround(mountains, cam, 0.2f);*/
 
 
 
@@ -97,7 +94,6 @@ public class Play extends GameState {
             if(cl.isPlayerOnGround()){ //check to see if the foot is acutally on the ground
                 player.getBody().applyForceToCenter(0, 225, true); // the player can jump a force of 200N upwards
 
-
             }
         }
         // Player run left
@@ -119,6 +115,7 @@ public class Play extends GameState {
                 player.getBody().applyForceToCenter(3, 0, true);
 
     }
+      //  System.out.println(cl.isPlayerOnGround());
 
 
 
@@ -146,7 +143,7 @@ public class Play extends GameState {
 
 
         // Set Camera To follow player
-        cam.position.set(player.getPosition().x * PPM + MyHorrorGame.V_WIDTH/4 ,player.getPosition().y * PPM + MyHorrorGame.V_WIDTH/100,0);//MyHorrorGame.V_HEIGHT/2,0);
+        cam.position.set(player.getPosition().x * PPM ,player.getPosition().y * PPM ,0);//MyHorrorGame.V_HEIGHT/2,0);
         cam.update();
 
 
@@ -164,40 +161,123 @@ public class Play extends GameState {
         // draw player
         sb.setProjectionMatrix(cam.combined);
         player.render(sb);
+        bat1.render(sb);
+
 
 
         // Draw the box2d world.
         // Render the bodies in the world, using the cam.
         // This lets you see the blocks
-        //b2dr.render(world, b2dCam.combined);
+       // b2dr.render(world, b2dCam.combined);
+
+
     }
 
     public void update(float dt) {
         handleInput(); // checks the input
+        onGround = cl.isPlayerOnGround();
         // How often does the world check itself, and the other 2 parameters set it so
         // that it checks every so often in the world
         world.step(dt,6,2);
-
+        bat1.update(dt);
+        bat1.getBody().setLinearVelocity(20 / PPM,10 / PPM);
         player.update(dt);
     }
 
     @Override
     public void dispose() {}
+    public void createenemy(){
 
-    public void createPlayer(){
 
-        BodyDef bdef = new BodyDef();
+        BodyDef edef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
 
+
         // Create a Player
         // Player spawn position
-        bdef.position.set(175 / PPM, 1360 / PPM);
+        edef.position.set(100/ PPM,1400 / PPM);
+
+
+
+
+        edef.type = BodyDef.BodyType.DynamicBody;
+        edef.linearVelocity.set(2,3);
+
+        Body body = world.createBody(edef);
+
+        // create enemy
+
+
+
+
+
+
+
+
+        //
+        // Create the shape
+        shape.setAsBox(10/PPM, 17/PPM);
+
+        // Create the fixture.
+        fdef.shape = shape;
+        fdef.restitution = 0f;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
+        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        body.createFixture(fdef).setUserData("enemy"); // sets it as the box
+
+
+        // Create Foot Sensor creates the foot of the player
+        shape.setAsBox(8 / PPM , 10/ PPM, new Vector2((-1/PPM), (15/PPM)), 0); //moves the foot lower than the player
+        fdef.shape = shape;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
+        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        fdef.isSensor = true; // makes the foot a sensor  "ghost fixure" it passes through things its a fixture other things can pass through but it detects collisions
+        body.createFixture(fdef).setUserData("hit");
+
+
+
+        // create Player
+
+        bat1 = new enemybat(body);
+        body.setUserData(bat1);
+
+
+
+
+
+
+    }
+    public void createPlayer(){
+
+        BodyDef bdef = new BodyDef();
+        BodyDef edef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+        FixtureDef efdef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+
+
+        // Create a Player
+        // Player spawn position
+        bdef.position.set(40/ PPM,1400 / PPM);
+
+
+
 
         bdef.type = BodyDef.BodyType.DynamicBody;
         //bdef.linearVelocity.set(2,0);
         Body body = world.createBody(bdef);
 
+        // create enemy
+
+
+
+
+
+
+
+
+        //
         // Create the shape
         shape.setAsBox(10/ PPM ,17 / PPM);
 
@@ -233,7 +313,7 @@ public class Play extends GameState {
         tmr = new OrthogonalTiledMapRenderer(tileMap);
 
         // Get this layer
-        TiledMapTileLayer layer = (TiledMapTileLayer) tileMap.getLayers().get("Tile Layer 1");
+        TiledMapTileLayer layer = (TiledMapTileLayer) tileMap.getLayers().get("Forground");
         tileSize = layer.getTileWidth();
 
         createLayer(layer, B2DVars.BIT_GROUND);

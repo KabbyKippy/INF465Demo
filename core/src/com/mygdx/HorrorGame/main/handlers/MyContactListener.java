@@ -16,6 +16,7 @@ public class MyContactListener implements ContactListener{
         Fixture fa = c.getFixtureA();
         Fixture fb = c.getFixtureB();
 
+
         // determines if the player is on the ground
         if(fa.getUserData() != null && fa.getUserData().equals("foot")){
 
@@ -30,7 +31,11 @@ public class MyContactListener implements ContactListener{
         //.out.println( fa.getUserData() + "," + fb.getUserData()); // when you run this you see that fa is the ground and fb is the box then the ground
 
 
+        if(fb.getUserData() != null && fb.getUserData().equals("")){
 
+            numFootContact++;
+
+        }
 
 
 

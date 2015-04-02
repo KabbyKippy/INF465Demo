@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="80" height="16" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="80" height="16" tilewidth="16" tileheight="16" nextobjectid="1">
  <tileset firstgid="1" name="platTileSet" tilewidth="16" tileheight="16" spacing="2">
   <image source="platTileSet.png" width="256" height="144"/>
  </tileset>
- <layer name="Tile Layer 1" width="80" height="16">
+ <tileset firstgid="113" name="firetileset" tilewidth="16" tileheight="16">
+  <image source="../Tilesets/firetileset.gif" width="240" height="30"/>
+ </tileset>
+ <layer name="Background" width="80" height="16">
   <data encoding="base64" compression="zlib">
-   eJzt0DENACAQxdAPQcDh3ywMKLgOLH1JDbSS7Kir4j/Cf4z/GP8x/mP8x/iP8R/jP8Z/jP8Y/zHjNq1dvZbZhw5W4gTl
+   eJylV8uOhDAM662zex9+AH6QfX3/9DCRjGWnKbuSBQsBUsdxOmdr7Xzja+B74Gfgt/m/J6APPACdjnHexb0u4twzKt5dC2yQJ54z8B3bIs62zh/mG7kFnnTkvDmG49wzKt5dCxwDu6jbrM5cB1X7gOJNXfsT3448+f147upf/Z85mvGg+HA1dTXjOqic8J7i60hy495SHMT5/gZqYQUqt4wH7g3m/SlinY9EznhERO+rHLM1Oe+o8FF9NnpD5YZr6fQ+9D6nua1de9D5iPLUuBe6yNZXheJpNjvUzFD9p/irzBvXH6oHlc85T43Y+GMu9huocqo4dvMn85Zs3lS8UX2beXZ1wPh2gyunl9keYYXfR7tyUfUX9gQ1h1Z6muvSRTxyc7RrPo4/lSP6rPJc7qW73M68Qu09lB6VZ23JNzCmmXjWk1rPnXXiez8GPic5rvDrZgVfY64d32pe8Dzp4j7q1XlxNgsquazqCt+J+Wc1nGncea3DzKO5f3keOF4yH8lycbMu+56qa7Uf8PksJvNGpwFXI+V32Cf424jzr/Dofkes6HHmb+pY7dWZZlf2KzzTVvcxKhenr/96XmXeZpjpW3kI64jXorTP/ZfNuGwvqvra+cGsx6say7Rd0Z/iGnWIexDlic5buL8qM0j1e9VjVA4Vja30hpuPeP4Cn0dlIQ==
+  </data>
+ </layer>
+ <layer name="Forground" width="80" height="16">
+  <data encoding="base64" compression="zlib">
+   eJy1WItuhDAM6y+zsTvg6wfSRYo8O49RIkXi+kha10na2waX71NXp9i3n3qcun10F3bGp2+DsQf5Xk79cr4X0vZT1M5Ypszv6vqsfwv27TFk9l4EFyXH+Is3fiNezCeOr2BbxZ+NY/O8Xzv/TCL8kF9KFO+8LqDoU621w9OOjQi7FfZSFdwzw6M6fx98fvVMOj6yvaozYHGL+M2UDg9xX8jPWWvxNr0vUy8dLqt8Pm6uv3suioMzhJ2RxzGTqI4p/Dr2K2ueKZfNF+h7sg+TrKZF+N3d/2wML1uGlekYz2LIeOfbotzN2rs4zMLP12cWR0/xkfnz7cg3Va9YHq7IrPpeue+ZPB3TuNYofrN3Q8d+No75MiwUdv63//bx/aSwu1Z2F8N7QMW+Gqcwu/Ye3aPZe4HF2dOi3lIq9/03jpVvtOP5FuGn2rBWKp2B9TLiXJflwRn1GeO0g5/ipbWr+VFNqOCL9bcTt9HbrYudzfX53sct41H03wL7PyDCvqIZ7zN+RfiqMdV2xC7iC+PUHa28zypzfwFhqWXB
   </data>
  </layer>
 </map>
