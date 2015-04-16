@@ -12,6 +12,7 @@ public class B2DVars {
     // these values decide what the object is considered so the ground is considered to be an object of type 2.. etc
     public static final short BIT_PLAYER = 2;
     public static final short BIT_GROUND = 4;
+    public static final short Bit_Item1 = 8;
   // the ball got removed  public static final short BIT_BALL = 8;
 /*
  Try not to use the default which is 1

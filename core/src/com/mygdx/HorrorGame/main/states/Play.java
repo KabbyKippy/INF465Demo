@@ -9,14 +9,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.HorrorGame.main.MyHorrorGame;
 import com.mygdx.HorrorGame.main.TileMap.BackGround;
+import com.mygdx.HorrorGame.main.entities.Items;
 import com.mygdx.HorrorGame.main.entities.Player;
 import com.mygdx.HorrorGame.main.entities.enemybat;
 import com.mygdx.HorrorGame.main.handlers.B2DVars;
@@ -45,6 +49,7 @@ public class Play extends GameState {
 
     private Player player;
     private enemybat bat1;
+    private Array<Items> Item;
 
     private BackGround[] backgrounds;
 
@@ -72,6 +77,9 @@ public class Play extends GameState {
 
         b2dr = new Box2DDebugRenderer();
 
+
+        // create Items
+        createItems();
 
 
 
@@ -161,6 +169,16 @@ public class Play extends GameState {
 
 
 
+
+        // items
+
+        for( int i = 0; i< Item.size; i++){
+            Item.get(i).render(sb);
+
+
+        }
+
+
         // Draw the box2d world.
         // Render the bodies in the world, using the cam.
         // This lets you see the blocks
@@ -179,6 +197,19 @@ public class Play extends GameState {
         bat1.update(dt);
         bat1.getBody().setLinearVelocity(20 / PPM,10 / PPM);
         player.update(dt);
+
+        /////items
+
+        for( int i = 0; i< Item.size; i++){
+            Item.get(i).update(dt);
+
+
+        }
+
+
+
+
+
     }
 
     @Override
@@ -372,4 +403,45 @@ public class Play extends GameState {
             }
         }
     }
+    private void createItems(){
+
+        Item = new Array<Items>();
+        MapLayer layer = tileMap.getLayers().get("Item");
+
+        BodyDef bdef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+
+
+        for(MapObject mo : layer.getObjects()){
+            bdef.type = BodyDef.BodyType.StaticBody;
+            float x = mo.getProperties().get("x", Float.class)/PPM;
+            float y = mo.getProperties().get("y", Float.class)/PPM;
+
+            bdef.position.set(x, y);
+
+            CircleShape cshape = new CircleShape();
+            cshape.setRadius(8/PPM);
+            fdef.shape = cshape;
+            fdef.isSensor = true;
+            fdef.filter.categoryBits = B2DVars.Bit_Item1;
+            fdef.filter.maskBits = B2DVars.BIT_PLAYER;
+
+            Body body = world.createBody(bdef);
+            body.createFixture(fdef);
+
+            Items c = new Items(body);
+            Item.add(c);
+
+
+            body.setUserData(c);
+
+
+
+
+        }
+
+
+
+    }
+
 }
