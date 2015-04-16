@@ -49,7 +49,7 @@ public class Play extends GameState {
     private BackGround[] backgrounds;
 
     public static boolean onGround;
-
+    public float accum = 0;
 
 
     public Play(GameStateManager gsm){
@@ -87,55 +87,51 @@ public class Play extends GameState {
 
     }
 
-    public void handleInput() {
+    public boolean handleInput(float dt) {
 
+        Vector2 vec;
+        Boolean maxSpeed;
         // player jump
-        if(MyInput.isPressed(MyInput.BUTTON1)){
-            if(cl.isPlayerOnGround()){ //check to see if the foot is acutally on the ground
+        if (MyInput.isPressed(MyInput.BUTTON1)) {
+            if (cl.isPlayerOnGround()) { //check to see if the foot i s acutally on the ground
                 player.getBody().applyForceToCenter(0, 225, true); // the player can jump a force of 200N upwards
 
             }
         }
         // Player run left
-        if(MyInput.isDown(MyInput.BUTTON2)){
-            if(cl.isPlayerOnGround())
-            player.getBody().applyForceToCenter(-6, 0, true);
+        if (MyInput.isDown(MyInput.BUTTON2)) {
+            if (cl.isPlayerOnGround()) {
+                accum = accum + dt;
+                vec = player.getBody().getLinearVelocity();
+                if (accum >= 30 * dt) {
+                    player.getBody().setLinearVelocity(vec);
+                    maxSpeed = true;
+                    System.out.println("The velocity is set to: " + vec);
+                    return maxSpeed;
+                }
+                else
+                    player.getBody().applyForceToCenter(-6, 0, true);
+            }
 
             else
                 player.getBody().applyForceToCenter(-3, 0, true);
 
-        }
+
+    }
 
         // Player run right
-        if(MyInput.isDown(MyInput.BUTTON3)){
-            if(cl.isPlayerOnGround())
-            player.getBody().applyForceToCenter(6, 0, true);
+        if (MyInput.isDown(MyInput.BUTTON3)) {
+            if (cl.isPlayerOnGround())
+                player.getBody().applyForceToCenter(6, 0, true);
 
             else
                 player.getBody().applyForceToCenter(3, 0, true);
 
-    }
-      //  System.out.println(cl.isPlayerOnGround());
-
-
-
-
-
-/* Test to see that the input works
-        if(MyInput.isPressed(MyInput.BUTTON1)){
-            System.out.println("The Z key is pressed");
-        }
-        if(MyInput.isDown(MyInput.BUTTON2))
-        {
-            System.out.println("The x button is held down");
-
         }
 
-
-
-
-*/
+    return false;
     }
+
 
     public void render() {
         // Clear screen
@@ -143,7 +139,7 @@ public class Play extends GameState {
 
 
         // Set Camera To follow player
-        cam.position.set(player.getPosition().x * PPM ,player.getPosition().y * PPM ,0);//MyHorrorGame.V_HEIGHT/2,0);
+        cam.position.set(player.getPosition().x * PPM ,player.getPosition().y * PPM,0);//MyHorrorGame.V_HEIGHT/2,0);
         cam.update();
 
 
@@ -174,7 +170,8 @@ public class Play extends GameState {
     }
 
     public void update(float dt) {
-        handleInput(); // checks the input
+        if(handleInput(dt) == true) // checks the input
+            accum = 0;
         onGround = cl.isPlayerOnGround();
         // How often does the world check itself, and the other 2 parameters set it so
         // that it checks every so often in the world
@@ -196,13 +193,13 @@ public class Play extends GameState {
 
         // Create a Player
         // Player spawn position
-        edef.position.set(100/ PPM,1400 / PPM);
+        edef.position.set(1450/ PPM,4380 / PPM);
 
 
 
 
         edef.type = BodyDef.BodyType.DynamicBody;
-        edef.linearVelocity.set(2,3);
+        edef.linearVelocity.set(-3,3);
 
         Body body = world.createBody(edef);
 
@@ -259,7 +256,7 @@ public class Play extends GameState {
 
         // Create a Player
         // Player spawn position
-        bdef.position.set(40/ PPM,1400 / PPM);
+        bdef.position.set(1200/ PPM, 4280 / PPM);
 
 
 
@@ -290,7 +287,7 @@ public class Play extends GameState {
 
 
         // Create Foot Sensor creates the foot of the player
-        shape.setAsBox(8 / PPM , 10/ PPM, new Vector2((-1/PPM), (-15/PPM)), 0); //moves the foot lower than the player
+        shape.setAsBox(9/ PPM , 10/ PPM, new Vector2(0, (-10/PPM)), 0); //moves the foot lower than the player
         fdef.shape = shape;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
         fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
@@ -309,11 +306,11 @@ public class Play extends GameState {
     public void createTiles(){
 
         // Load tile map
-        tileMap = new TmxMapLoader().load("Resources/Maps/Level1Demo.tmx");
+        tileMap = new TmxMapLoader().load("Resources/Maps/master map.tmx");
         tmr = new OrthogonalTiledMapRenderer(tileMap);
 
         // Get this layer
-        TiledMapTileLayer layer = (TiledMapTileLayer) tileMap.getLayers().get("Forground");
+        TiledMapTileLayer layer = (TiledMapTileLayer) tileMap.getLayers().get("Walls/Floors");
         tileSize = layer.getTileWidth();
 
         createLayer(layer, B2DVars.BIT_GROUND);
