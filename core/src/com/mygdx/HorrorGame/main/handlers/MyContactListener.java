@@ -1,6 +1,9 @@
 package com.mygdx.HorrorGame.main.handlers;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+
+import java.util.ArrayList;
 
 /**
  * Created by NanoUnit on 3/23/2015.
@@ -9,7 +12,19 @@ public class MyContactListener implements ContactListener{
 
 
     private int numFootContact;
+    private Array<Body> bodiesToRemove;
    // Called when two fixtues start to collide with each other
+
+    public  MyContactListener(){
+        super();
+        bodiesToRemove = new Array<Body>();
+
+
+
+    }
+
+
+
     public void beginContact(Contact c){
 
 
@@ -18,6 +33,7 @@ public class MyContactListener implements ContactListener{
 
 
         // determines if the player is on the ground
+        if(fa == null || fb == null){return;}
         if(fa.getUserData() != null && fa.getUserData().equals("foot")){
 
             numFootContact++;
@@ -31,12 +47,22 @@ public class MyContactListener implements ContactListener{
         //.out.println( fa.getUserData() + "," + fb.getUserData()); // when you run this you see that fa is the ground and fb is the box then the ground
 
 
+        if(fa.getUserData() != null && fa.getUserData().equals("lantern")){
+
+            // remove crystal
+            bodiesToRemove.add(fa.getBody());
+
+        }
+        if(fb.getUserData() != null && fb.getUserData().equals("lantern")){
+
+            bodiesToRemove.add(fb.getBody());
+
+        }
         if(fb.getUserData() != null && fb.getUserData().equals("")){
 
             numFootContact++;
 
         }
-
 
 
 
@@ -50,6 +76,7 @@ public class MyContactListener implements ContactListener{
         Fixture fb = c.getFixtureB();
 
         // determines if the player is not on the ground
+        if(fa == null || fb == null){return;}
         if(fa.getUserData() != null && fa.getUserData().equals("foot")){
 
             numFootContact--;
@@ -66,7 +93,7 @@ public class MyContactListener implements ContactListener{
 
 
     public boolean isPlayerOnGround(){return numFootContact > 0;}
-
+    public Array<Body> getBodiesToRemove() {return bodiesToRemove;}
 
 
 

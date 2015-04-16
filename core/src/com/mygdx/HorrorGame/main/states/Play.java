@@ -38,6 +38,7 @@ public class Play extends GameState {
 
     // This renders all the bodies we use for box2d
     private Box2DDebugRenderer b2dr;
+    private boolean debug = false;
 
     private OrthographicCamera b2dCam;
 
@@ -182,7 +183,9 @@ public class Play extends GameState {
         // Draw the box2d world.
         // Render the bodies in the world, using the cam.
         // This lets you see the blocks
-       // b2dr.render(world, b2dCam.combined);
+// draws the box world
+        if(debug){
+        b2dr.render(world, b2dCam.combined);}
 
 
     }
@@ -193,10 +196,29 @@ public class Play extends GameState {
         onGround = cl.isPlayerOnGround();
         // How often does the world check itself, and the other 2 parameters set it so
         // that it checks every so often in the world
-        world.step(dt,6,2);
+        world.step(dt, 6, 2);
+
+        // remove items
+
+        Array<Body> bodies = cl.getBodiesToRemove();
+        for (int i =0 ; i< bodies.size; i++){
+            Body b = bodies.get(i);
+
+            Item.removeValue((Items) b.getUserData(), true );
+            world.destroyBody(b);
+            player.collectHealth();
+
+
+        }
+        bodies.clear();
         bat1.update(dt);
         bat1.getBody().setLinearVelocity(20 / PPM,10 / PPM);
         player.update(dt);
+
+
+
+
+
 
         /////items
 
@@ -313,7 +335,7 @@ public class Play extends GameState {
         fdef.shape = shape;
         fdef.restitution = 0f;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
-        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        fdef.filter.maskBits = B2DVars.BIT_GROUND | B2DVars.Bit_Item1; //collides with ground
         body.createFixture(fdef).setUserData("player"); // sets it as the box
 
 
@@ -427,7 +449,7 @@ public class Play extends GameState {
             fdef.filter.maskBits = B2DVars.BIT_PLAYER;
 
             Body body = world.createBody(bdef);
-            body.createFixture(fdef);
+            body.createFixture(fdef).setUserData("lantern");
 
             Items c = new Items(body);
             Item.add(c);
