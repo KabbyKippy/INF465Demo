@@ -11,7 +11,7 @@ public class MyInputProcessor extends InputAdapter {
     @Override
     public boolean keyDown(int k){
 
-        if ( k  == Keys.W){
+        if ( k  == Keys.UP){
             MyInput.setKey(MyInput.BUTTON1 , true);
 
         }// Z to jump buttonm is pressed
@@ -20,14 +20,20 @@ public class MyInputProcessor extends InputAdapter {
 
         // X to change color of platform
 
-        if( k == Keys.A){
+        if( k == Keys.LEFT){
             MyInput.setKey(MyInput.BUTTON2, true );
 
 
         }
 
-        if( k == Keys.D){
+        if( k == Keys.RIGHT){
             MyInput.setKey(MyInput.BUTTON3, true );
+
+
+        }
+
+        if( k == Keys.SPACE){
+            MyInput.setKey(MyInput.BUTTON4, true );
 
 
         }
@@ -38,17 +44,23 @@ public class MyInputProcessor extends InputAdapter {
 
     @Override
     public boolean keyUp(int k) {
-        if ( k  == Keys.W){
+        if ( k  == Keys.UP ){
             MyInput.setKey(MyInput.BUTTON1 , false); //button is now unpressed
 
         }
-        if( k == Keys.A){
+        if( k == Keys.LEFT){
             MyInput.setKey(MyInput.BUTTON2, false );
 
 
         }
-        if( k == Keys.D){
+        if( k == Keys.RIGHT){
             MyInput.setKey(MyInput.BUTTON3, false );
+
+
+        }
+
+        if( k == Keys.SPACE){
+            MyInput.setKey(MyInput.BUTTON4, false );
 
 
         }

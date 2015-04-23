@@ -12,11 +12,14 @@ import com.mygdx.HorrorGame.main.states.Play;
 /**
  * Created by Aaron on 3/25/2015.
  */
-public class Player extends B2DSprite {
 
+public class Player extends B2DSprite {
+    boolean finAtt = false;
+    boolean right = false;
     long startTime;
     long endTime;
     private int numHealth;
+
 
     public Player(Body body){
         super(body);
@@ -44,6 +47,45 @@ public class Player extends B2DSprite {
     public void update(float dt){
 
         animation.update(dt);
+
+
+
+        if(MyInput.isPressed(MyInput.BUTTON4) && MyInput.wasPressed(MyInput.BUTTON3))
+        {
+            if(finAtt == false)
+            {
+                finAtt = true;
+                right = true;
+                Texture tex = MyHorrorGame.res.getTexture("PlayerATKRight");
+
+                TextureRegion[] sprites = TextureRegion.split(tex, 80, 40)[0];
+
+                setAnimation(sprites, 1 / 12f);
+
+
+                System.out.println("I'm attacking right" + " ");
+            }
+
+        }
+
+        if(MyInput.isPressed(MyInput.BUTTON4) && MyInput.wasPressed(MyInput.BUTTON2))
+        {
+            if(finAtt == false)
+            {
+                finAtt = true;
+                right = false;
+                Texture tex = MyHorrorGame.res.getTexture("PlayerATKLeft");
+
+                TextureRegion[] sprites = TextureRegion.split(tex, 80, 40)[0];
+
+                setAnimation(sprites, 1 / 12f);
+
+
+                System.out.println("I'm attacking left" + " ");
+            }
+
+        }
+
         if(MyInput.isPressed(MyInput.BUTTON1) && MyInput.wasPressed(MyInput.BUTTON3)) {
             startTime = System.nanoTime();
 
@@ -53,7 +95,6 @@ public class Player extends B2DSprite {
             TextureRegion[] sprites = TextureRegion.split(tex, 40, 40)[0];
 
             setAnimation(sprites, 1 / 12f);
-
 
             System.out.println("I'm jumping right");
         }
@@ -121,8 +162,32 @@ public class Player extends B2DSprite {
             System.out.println("I'm walking right");}
 
 
+        // If an animation needs to halt after one iteration, it goes here.
+        if(animation.getTimesPlayed() == 1)
+        {
+            // Finish attacking
+           if(finAtt) {
 
+               if(right) {
+                   Texture tex = MyHorrorGame.res.getTexture("PlayerIdle");
 
+                   TextureRegion[] sprites = TextureRegion.split(tex, 40, 40)[0];
+                   setAnimation(sprites, 1 / 10f);
+                   System.out.println("I'm done" + " " + finAtt + " ");
+                   animation.setTimesPlayed(0);
+                   finAtt = false;
+               }
+               if(!right){
+                   Texture tex = MyHorrorGame.res.getTexture("PlayerIdleleft");
+
+                   TextureRegion[] sprites = TextureRegion.split(tex, 40, 40)[0];
+                   setAnimation(sprites, 1 / 10f);
+                   System.out.println("I'm done" + " " + finAtt + " ");
+                   animation.setTimesPlayed(0);
+                   finAtt = false;
+               }
+            }
+        }
     }
 
     public void collectHealth(){ numHealth++;}
