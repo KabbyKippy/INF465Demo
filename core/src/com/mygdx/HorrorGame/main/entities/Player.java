@@ -44,7 +44,7 @@ public class Player extends B2DSprite {
     public void update(float dt){
 
         animation.update(dt);
-        if(MyInput.isPressed(MyInput.BUTTON1)) {
+        if(MyInput.isPressed(MyInput.BUTTON1) && MyInput.wasPressed(MyInput.BUTTON3)) {
             startTime = System.nanoTime();
 
 
@@ -55,12 +55,24 @@ public class Player extends B2DSprite {
             setAnimation(sprites, 1 / 12f);
 
 
-            System.out.println("I'm jumping");
-            endTime = System.nanoTime();
-
-            System.out.println(startTime + " , " + endTime +  " , " + (endTime - startTime) + " I'm not jumping anymore.");
-            System.out.println(dt);
+            System.out.println("I'm jumping right");
         }
+        if(MyInput.isPressed(MyInput.BUTTON1) && MyInput.wasPressed(MyInput.BUTTON2)) {
+            startTime = System.nanoTime();
+
+
+            Texture tex = MyHorrorGame.res.getTexture("PlayerIdleleft");
+
+            TextureRegion[] sprites = TextureRegion.split(tex, 40, 40)[0];
+
+            setAnimation(sprites, 1 / 12f);
+
+
+            System.out.println("I'm jumping left");
+
+        }
+
+
         endTime = 0;
         startTime = 0;
         if(MyInput.isPressed(MyInput.BUTTON2)){
