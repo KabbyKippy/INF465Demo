@@ -62,3 +62,4 @@ build/
 
 ## OS Specific
 .DS_Store
+core/src/com/mygdx/HorrorGame/main/states/Play.java
