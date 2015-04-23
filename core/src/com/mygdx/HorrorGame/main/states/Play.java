@@ -309,8 +309,8 @@ public class Play extends GameState {
 
         // Create a Player
         // Player spawn position
-        bdef.position.set(1200/ PPM, 4280 / PPM);
-
+        // old: bdef.position.set(1200/ PPM, 4280 / PPM);
+        bdef.position.set(2800/PPM, 2669/PPM);
 
 
 
