@@ -3,20 +3,15 @@ package com.mygdx.HorrorGame.main.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.mygdx.HorrorGame.main.MyHorrorGame;
-import com.mygdx.HorrorGame.main.handlers.MyInput;
-import com.mygdx.HorrorGame.main.states.Play;
 
 /**
- * Created by NanoUnit on 4/2/2015.
+ * Created by NanoUnit on 4/23/2015.
  */
-public class enemybat extends B2DSprite {
-
+public class enemytengu extends B2DSprite{
     private int numHealth;
 
-    public enemybat(Body body){
+    public enemytengu(Body body){
         super(body);
 
         Texture tex = MyHorrorGame.res.getTexture("enemy");
@@ -41,3 +36,4 @@ public class enemybat extends B2DSprite {
     public void collectHealth(){ numHealth++;}
     public int getNumHealth(){return numHealth;}
 }
+

@@ -23,6 +23,7 @@ import com.mygdx.HorrorGame.main.TileMap.BackGround;
 import com.mygdx.HorrorGame.main.entities.Items;
 import com.mygdx.HorrorGame.main.entities.Player;
 import com.mygdx.HorrorGame.main.entities.enemybat;
+import com.mygdx.HorrorGame.main.entities.enemytengu;
 import com.mygdx.HorrorGame.main.handlers.B2DVars;
 import com.mygdx.HorrorGame.main.handlers.GameStateManager;
 import com.mygdx.HorrorGame.main.handlers.MyContactListener;
@@ -50,6 +51,9 @@ public class Play extends GameState {
 
     private Player player;
     private enemybat bat1;
+    private enemybat bat2;
+    private enemybat bat3;
+    private enemytengu tengu;
     private Array<Items> Item;
 
     private BackGround[] backgrounds;
@@ -167,7 +171,9 @@ public class Play extends GameState {
         sb.setProjectionMatrix(cam.combined);
         player.render(sb);
         bat1.render(sb);
-
+        bat2.render(sb);
+        bat3.render(sb);
+        //tengu.render(sb);
 
 
 
@@ -212,7 +218,11 @@ public class Play extends GameState {
         }
         bodies.clear();
         bat1.update(dt);
-        bat1.getBody().setLinearVelocity(20 / PPM,10 / PPM);
+        bat1.getBody().setLinearVelocity(20 / PPM, 10 / PPM);
+        bat2.update(dt);
+        bat2.getBody().setLinearVelocity(-20 / PPM,10 / PPM);
+        bat3.update(dt);
+        bat3.getBody().setLinearVelocity(40 / PPM,10 / PPM);
         player.update(dt);
 
 
@@ -240,13 +250,17 @@ public class Play extends GameState {
 
 
         BodyDef edef = new BodyDef();
+        BodyDef edef2 = new BodyDef();
+        BodyDef edef3 = new BodyDef();
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
 
 
         // Create a Player
         // Player spawn position
-        edef.position.set(1450/ PPM,4380 / PPM);
+        edef.position.set(3000/PPM, 2800/PPM);
+        edef2.position.set(2600/PPM, 2800/PPM);
+        edef3.position.set(3000/PPM, 2850/PPM);
 
 
 
@@ -255,6 +269,14 @@ public class Play extends GameState {
         edef.linearVelocity.set(-3,3);
 
         Body body = world.createBody(edef);
+        edef2.type = BodyDef.BodyType.DynamicBody;
+        edef2.linearVelocity.set(-3,3);
+
+        Body body2 = world.createBody(edef2);
+        edef3.type = BodyDef.BodyType.DynamicBody;
+        edef3.linearVelocity.set(-3,3);
+
+        Body body3 = world.createBody(edef3);
 
         // create enemy
 
@@ -273,17 +295,21 @@ public class Play extends GameState {
         fdef.shape = shape;
         fdef.restitution = 0f;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
-        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        fdef.filter.maskBits = B2DVars.BIT_GROUND |  B2DVars.BIT_PLAYER; //collides with ground
         body.createFixture(fdef).setUserData("enemy"); // sets it as the box
+        body2.createFixture(fdef).setUserData("enemy");
+        body3.createFixture(fdef).setUserData("enemy");
 
 
         // Create Foot Sensor creates the foot of the player
         shape.setAsBox(8 / PPM , 10/ PPM, new Vector2((-1/PPM), (15/PPM)), 0); //moves the foot lower than the player
         fdef.shape = shape;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
-        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        fdef.filter.maskBits = B2DVars.BIT_GROUND ; //collides with ground
         fdef.isSensor = true; // makes the foot a sensor  "ghost fixure" it passes through things its a fixture other things can pass through but it detects collisions
         body.createFixture(fdef).setUserData("hit");
+        body2.createFixture(fdef).setUserData("hit");
+        body3.createFixture(fdef).setUserData("hit");
 
 
 
@@ -291,7 +317,10 @@ public class Play extends GameState {
 
         bat1 = new enemybat(body);
         body.setUserData(bat1);
-
+        bat2 = new enemybat(body2);
+        body.setUserData(bat2);
+        bat3 = new enemybat(body3);
+        body.setUserData(bat3);
 
 
 
@@ -335,7 +364,7 @@ public class Play extends GameState {
         fdef.shape = shape;
         fdef.restitution = 0f;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
-        fdef.filter.maskBits = B2DVars.BIT_GROUND | B2DVars.Bit_Item1; //collides with ground
+        fdef.filter.maskBits = B2DVars.BIT_GROUND | B2DVars.Bit_Item1 |  B2DVars.BIT_PLAYER; //collides with ground
         body.createFixture(fdef).setUserData("player"); // sets it as the box
 
 
@@ -343,7 +372,7 @@ public class Play extends GameState {
         shape.setAsBox(9/ PPM , 10/ PPM, new Vector2(0, (-10/PPM)), 0); //moves the foot lower than the player
         fdef.shape = shape;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
-        fdef.filter.maskBits = B2DVars.BIT_GROUND; //collides with ground
+        fdef.filter.maskBits = B2DVars.BIT_GROUND |  B2DVars.BIT_PLAYER; //collides with ground
         fdef.isSensor = true; // makes the foot a sensor  "ghost fixure" it passes through things its a fixture other things can pass through but it detects collisions
         body.createFixture(fdef).setUserData("foot");
 
