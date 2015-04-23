@@ -400,8 +400,7 @@ public class Play extends GameState {
                 Vector2[] v = new Vector2[4];
 
                 v[0] = new Vector2(
-                        -tileSize / 2/ PPM, -tileSize /
-                        2 / PPM
+                        -tileSize / 2/ PPM, -tileSize / 2 / PPM
                 );
                 v[1] = new Vector2(
                         -tileSize / 2/ PPM, tileSize / 2 / PPM
