@@ -44,6 +44,10 @@ public class MyHorrorGame extends ApplicationAdapter {
         res.loadTexture("Resources/Sprites/Player/Playeridleleft.png", "PlayerIdleleft");
         res.loadTexture("Resources/Sprites/Player/PlayerWalkAnimationLeft.png", "PlayerWalkLeft");
         res.loadTexture("Resources/Sprites/Player/PlayerWalkAnimationRight.png", "PlayerWalkRight");
+        res.loadTexture("Resources/Sprites/Player/ATKLeft.png", "PlayerATKLeft");
+        res.loadTexture("Resources/Sprites/Player/ATKRight.png", "PlayerATKRight");
+        res.loadTexture("Resources/Sprites/Player/ATKUpLeft.png", "PlayerATKUpeft  ");
+        res.loadTexture("Resources/Sprites/Player/ATKUpRight.png", "PlayerATKUpRight");
         res.loadTexture("Resources/Sprites/Other/crystal.png", "Item1");
 
         sb = new SpriteBatch();
