@@ -48,7 +48,36 @@ public class Player extends B2DSprite {
 
         animation.update(dt);
 
+        if(MyInput.isPressed(MyInput.BUTTON4))
+        {
+            if(finAtt == false)
+            {
+                finAtt = true;
 
+                if(right == true)
+                {
+                    Texture tex = MyHorrorGame.res.getTexture("PlayerATKRight");
+                    TextureRegion[] sprites = TextureRegion.split(tex, 80, 40)[0];
+
+                    setAnimation(sprites, 1 / 12f);
+                }
+
+                else
+                {
+                    Texture tex = MyHorrorGame.res.getTexture("PlayerATKLeft");
+                    TextureRegion[] sprites = TextureRegion.split(tex, 80, 40)[0];
+
+                    setAnimation(sprites, 1 / 12f);
+                }
+
+
+
+
+
+
+            }
+
+        }
 
         if(MyInput.isPressed(MyInput.BUTTON4) && MyInput.wasPressed(MyInput.BUTTON3))
         {
@@ -97,9 +126,11 @@ public class Player extends B2DSprite {
             setAnimation(sprites, 1 / 12f);
 
             System.out.println("I'm jumping right");
+            right = true;
         }
         if(MyInput.isPressed(MyInput.BUTTON1) && MyInput.wasPressed(MyInput.BUTTON2)) {
             startTime = System.nanoTime();
+            right = false;
 
 
             Texture tex = MyHorrorGame.res.getTexture("PlayerIdleleft");
@@ -118,6 +149,7 @@ public class Player extends B2DSprite {
         startTime = 0;
         if(MyInput.isPressed(MyInput.BUTTON2)){
             System.out.println("I'm walking left");
+            right = false;
 
             Texture  tex = MyHorrorGame.res.getTexture("PlayerWalkLeft");
 
@@ -153,6 +185,7 @@ public class Player extends B2DSprite {
 
 
         if(MyInput.isPressed(MyInput.BUTTON3)){
+            right = true;
             Texture  tex = MyHorrorGame.res.getTexture("PlayerWalkRight");
 
             TextureRegion[] sprites = TextureRegion.split(tex, 40, 40)[0];
@@ -192,4 +225,7 @@ public class Player extends B2DSprite {
 
     public void collectHealth(){ numHealth++;}
     public int getNumHealth(){return numHealth;}
+    public boolean damaged(){
+        System.out.println("I'm being hurt right now.");
+    }
 }
