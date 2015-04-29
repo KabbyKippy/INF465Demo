@@ -57,6 +57,8 @@ public class Play extends GameState {
     private enemybat bat2;
     private enemybat bat3;
     private enemytengu tengu;
+    private enemytengu tengu2;
+    private enemytengu tengu3;
     private boolean turnAround;
     private int steps;
     //private Array<enemybat> bat;
@@ -82,6 +84,7 @@ public class Play extends GameState {
         // Create player
         createPlayer();
         createenemy();
+       // createElevator();
 
         music.setVolume(0.5f);
         music.setLooping(true);
@@ -167,7 +170,7 @@ public class Play extends GameState {
         // Set Camera To follow player
         cam.position.set(player.getPosition().x * PPM ,player.getPosition().y * PPM,0);//MyHorrorGame.V_HEIGHT/2,0);
         cam.update();
-        //System.out.println(player.getPosition().x + "           " + player.getPosition().y );
+        System.out.println(player.getPosition().x + "           " + player.getPosition().y );
 
 
 
@@ -192,6 +195,10 @@ public class Play extends GameState {
             bat3.render(sb);}
         if(tengu.getBody().getUserData() != null)
         {  tengu.render(sb);}
+        if(tengu2.getBody().getUserData() != null)
+        {  tengu2.render(sb);}
+        if(tengu3.getBody().getUserData() != null)
+        {  tengu3.render(sb);}
        // bat2.render(sb);
         //bat3.render(sb);
         //
@@ -238,6 +245,8 @@ public class Play extends GameState {
             Item.removeValue((Items) b.getUserData(), true );
             world.destroyBody(b);
             player.collectHealth();
+            System.out.println("The game is over.");
+            System.exit(0);
 
 
         }
@@ -254,8 +263,12 @@ public class Play extends GameState {
             bat3.update(dt);
             bat3.getBody().setLinearVelocity(40 / PPM, 10 / PPM);
             player.update(dt);
-            tengu.getBody().setLinearVelocity(40 / PPM, 10 / PPM);
+            tengu.getBody().setLinearVelocity(40 / PPM, 0);
             tengu.update(dt);
+            tengu2.getBody().setLinearVelocity(40 / PPM, 0);
+            tengu2.update(dt);
+            tengu3.getBody().setLinearVelocity(40 / PPM, 0);
+            tengu3.update(dt);
         }
         else if((steps >= 400))
         {
@@ -268,8 +281,12 @@ public class Play extends GameState {
             bat3.update(dt);
             bat3.getBody().setLinearVelocity(-40 / PPM, 10 / PPM);
             player.update(dt);
-            tengu.getBody().setLinearVelocity(-40 / PPM, 10 / PPM);
+            tengu.getBody().setLinearVelocity(-40 / PPM, 0);
             tengu.update(dt);
+            tengu2.getBody().setLinearVelocity(-40 / PPM, 0);
+            tengu2.update(dt);
+            tengu3.getBody().setLinearVelocity(-40 / PPM, 0);
+            tengu3.update(dt);
 
             if(steps > 600) steps = 0;
         }
@@ -327,6 +344,9 @@ public class Play extends GameState {
         BodyDef edef2 = new BodyDef();
         BodyDef edef3 = new BodyDef();
         BodyDef edef4 = new BodyDef();
+        BodyDef edef5 = new BodyDef();
+        BodyDef edef6 = new BodyDef();
+
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
 
@@ -337,6 +357,9 @@ public class Play extends GameState {
         edef2.position.set(2600/PPM, 2800/PPM);
         edef3.position.set(3000/PPM, 2850/PPM);
         edef4.position.set(3126/PPM , 1586/PPM);
+        edef5.position.set(4000/PPM , 1586/PPM);
+        edef6.position.set(3800/PPM , 1586/PPM);
+        //edef4.position.set(3000/PPM , 2800/PPM);
 
 
 
@@ -353,11 +376,19 @@ public class Play extends GameState {
         edef3.linearVelocity.set(-3,3);
 
         Body body3 = world.createBody(edef3);
-        Body body4 = world.createBody(edef4);
+
         edef4.type = BodyDef.BodyType.DynamicBody;
-        edef4.linearVelocity.set(-3,3);
+        //edef4.linearVelocity.set(-3,3);
 
+        Body body4 = world.createBody(edef4);
+        edef5.type = BodyDef.BodyType.DynamicBody;
+        //edef4.linearVelocity.set(-3,3);
 
+        Body body5 = world.createBody(edef5);
+        edef6.type = BodyDef.BodyType.DynamicBody;
+        //edef4.linearVelocity.set(-3,3);
+
+        Body body6 = world.createBody(edef6);
 
         // create enemy
 
@@ -370,7 +401,7 @@ public class Play extends GameState {
 
         //
         // Create the shape
-        shape.setAsBox(10/PPM, 17/PPM);
+        shape.setAsBox(30/PPM, 17/PPM);
 
         // Create the fixture.
         fdef.shape = shape;
@@ -380,11 +411,16 @@ public class Play extends GameState {
         body.createFixture(fdef).setUserData("enemy"); // sets it as the box
         body2.createFixture(fdef).setUserData("enemy");
         body3.createFixture(fdef).setUserData("enemy");
-        body4.createFixture(fdef).setUserData("enemyt");
+
+        shape.setAsBox(15 / PPM, 12 / PPM);
+        fdef.shape = shape;
+        body4.createFixture(fdef).setUserData("enemy");
+        body6.createFixture(fdef).setUserData("enemy");
+        body5.createFixture(fdef).setUserData("enemy");
 
 
         // Create Foot Sensor creates the foot of the player
-        shape.setAsBox(8 / PPM , 10/ PPM, new Vector2((-1/PPM), (15/PPM)), 0); //moves the foot lower than the player
+        shape.setAsBox(8 / PPM, 10 / PPM, new Vector2((-1 / PPM), (15 / PPM)), 0); //moves the foot lower than the player
         fdef.shape = shape;
         fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
         fdef.filter.maskBits = B2DVars.BIT_GROUND ; //collides with ground
@@ -406,6 +442,10 @@ public class Play extends GameState {
         body3.setUserData(bat3);
         tengu = new enemytengu(body4);
         body4.setUserData(tengu);
+        tengu2 = new enemytengu(body5);
+        body5.setUserData(tengu2);
+        tengu3 = new enemytengu(body6);
+        body6.setUserData(tengu3);
 
 
 
@@ -431,15 +471,6 @@ public class Play extends GameState {
         bdef.type = BodyDef.BodyType.DynamicBody;
         //bdef.linearVelocity.set(2,0);
         Body body = world.createBody(bdef);
-
-        // create enemy
-
-
-
-
-
-
-
 
         //
         // Create the shape
@@ -539,6 +570,49 @@ public class Play extends GameState {
             }
         }
     }
+
+   /* public void createElevator(){
+
+        BodyDef bdef = new BodyDef();
+        BodyDef edef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+        FixtureDef efdef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+
+
+        // Create a Player
+        // Player spawn position
+        // old: bdef.position.set(1200/ PPM, 4280 / PPM);
+        bdef.position.set(4200/PPM, 2669/PPM);
+
+
+
+        bdef.type = BodyDef.BodyType.KinematicBody;
+        //bdef.linearVelocity.set(2,0);
+        Body body = world.createBody(bdef);
+
+        // Create the shape
+        shape.setAsBox(50/ PPM ,20 / PPM);
+
+        // Create the fixture.
+        fdef.shape = shape;
+        fdef.restitution = 0f;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
+        fdef.filter.maskBits = B2DVars.BIT_GROUND | B2DVars.Bit_Item1 |  B2DVars.BIT_PLAYER; //collides with ground
+        body.createFixture(fdef).setUserData("elevator"); // sets it as the box
+
+
+        // Create Foot Sensor creates the foot of the player
+        shape.setAsBox(50/ PPM , 20/ PPM, new Vector2(0, (-10/PPM)), 0); //moves the foot lower than the player
+        fdef.shape = shape;
+        fdef.filter.categoryBits = B2DVars.BIT_PLAYER; // type of box
+        fdef.filter.maskBits = B2DVars.BIT_GROUND |  B2DVars.BIT_PLAYER; //collides with ground
+        fdef.isSensor = true; // makes the foot a sensor  "ghost fixure" it passes through things its a fixture other things can pass through but it detects collisions
+        body.createFixture(fdef).setUserData("elevatorSensor");
+
+
+
+    }*/
     private void createItems(){
 
         Item = new Array<Items>();

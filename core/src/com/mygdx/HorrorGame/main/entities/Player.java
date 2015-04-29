@@ -91,7 +91,7 @@ public class Player extends B2DSprite {
 
                 TextureRegion[] sprites = TextureRegion.split(tex, 80, 50)[0];
 
-                setAnimation(sprites, 1 / 12f);
+                setAnimation(sprites, 1 / 20f);
 
 
                 System.out.println("I'm dash attacking right" + " ");
@@ -101,7 +101,7 @@ public class Player extends B2DSprite {
 
 
         // DASH ATTACK HERE
-        /*
+
         if(MyInput.isDown(MyInput.BUTTON4) && MyInput.isDown(MyInput.BUTTON2))
         {
             if(finAtt == false)
@@ -112,7 +112,7 @@ public class Player extends B2DSprite {
 
                 TextureRegion[] sprites = TextureRegion.split(tex, 80, 50)[0];
 
-                setAnimation(sprites, 1 / 12f);
+                setAnimation(sprites, 1 / 20f);
 
 
                 System.out.println("I'm dash attacking left" + " ");
@@ -133,7 +133,7 @@ public class Player extends B2DSprite {
             System.out.println("I'm jumping right");
             right = true;
         }
-        */
+
         if(MyInput.isPressed(MyInput.BUTTON1) && MyInput.wasPressed(MyInput.BUTTON2)) {
             startTime = System.nanoTime();
             right = false;

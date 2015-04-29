@@ -15,9 +15,9 @@ import com.mygdx.HorrorGame.main.states.GameState;
 public class MyHorrorGame extends ApplicationAdapter {
 
     // Title, width, height, and the scale which increases the game dimensions.
-    public static final String TITLE = "Demo";
-    public static final int V_WIDTH = 320;
-    public static final int V_HEIGHT = 240;
+    public static final String TITLE = "Simons Quest IV";
+    public static final int V_WIDTH = (int) 320+160;
+    public static final int V_HEIGHT = (int) 240+120;
     public static final int SCALE = 2;
 
     public static final float STEP = 1 / 60f;
@@ -51,7 +51,7 @@ public class MyHorrorGame extends ApplicationAdapter {
         res.loadTexture("Resources/Sprites/Player/ATKUpLeft.png", "PlayerATKUpeft");
         res.loadTexture("Resources/Sprites/Player/ATKUpRight.png", "PlayerATKUpRight");
         res.loadTexture("Resources/Sprites/Enemies/img1.png", "enemy");
-        res.loadTexture("Resources/Sprites/Enemies/TenguWalk.gif", "tengu");
+        res.loadTexture("Resources/Sprites/Enemies/TenguWalk.png", "tengu");
         res.loadTexture("Resources/Sprites/Other/crystal.png", "Item1");
         res.loadTexture("Resources/HUD/Hud.gif", "hud");
 
