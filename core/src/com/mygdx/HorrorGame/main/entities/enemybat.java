@@ -2,6 +2,7 @@ package com.mygdx.HorrorGame.main.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -12,9 +13,42 @@ import com.mygdx.HorrorGame.main.states.Play;
 /**
  * Created by NanoUnit on 4/2/2015.
  */
-public class enemybat extends B2DSprite {
+public abstract class enemybat extends B2DSprite {
 
-    private int numHealth;
+    protected int health;
+    protected  int maxHealth;
+    protected boolean dead;
+    protected  int damage;
+    protected boolean flintching;
+    protected  long flintchTimer;
+
+    public Enemy(TiledMap tm)
+    {
+        super(tm)
+
+
+
+
+    }
+    public boolean isDead(){return dead;}
+    public int getDamage() {return damage;}
+    public void hit(int damage)
+    {
+        if (dead || flintching )return;
+        health -= damage;
+        if(health < 0) health =0;
+        if (health == 0) dead = true;
+        flintching = true;
+        flintching = System.nanoTime();
+
+
+
+    }
+
+
+
+
+
 
     public enemybat(Body body){
         super(body);
