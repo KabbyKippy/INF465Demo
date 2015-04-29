@@ -4,6 +4,7 @@ import static com.mygdx.HorrorGame.main.handlers.B2DVars.PPM;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -36,6 +37,7 @@ public class Play extends GameState {
 
     // The world the game takes place in
     private World world;
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("Resources/Music/level1.mp3"));
 
     // This renders all the bodies we use for box2d
     private Box2DDebugRenderer b2dr;
@@ -76,6 +78,10 @@ public class Play extends GameState {
         // Create player
         createPlayer();
         createenemy();
+
+        music.setVolume(0.5f);
+        music.setLooping(true);
+        music.play();
 
         // Create tiles
         createTiles();
@@ -224,6 +230,25 @@ public class Play extends GameState {
         bat3.update(dt);
         bat3.getBody().setLinearVelocity(40 / PPM,10 / PPM);
         player.update(dt);
+
+        if(cl.injured == true && !MyInput.isDown(MyInput.BUTTON4))
+        {
+
+            if(MyInput.wasPressed(MyInput.BUTTON4))
+            {
+
+                System.out.println("You're dead");
+                //world.destroyBody(bat1.getBody());
+
+            }
+            if(player.right == true)
+                player.getBody().setLinearVelocity(-300 / PPM, 100 / PPM);
+
+            if(player.right == false)
+                player.getBody().setLinearVelocity(300 / PPM, 100 / PPM);
+
+            //player.getBody().setLinearVelocity(0 / PPM, 0 / PPM);
+        }
 
 
 

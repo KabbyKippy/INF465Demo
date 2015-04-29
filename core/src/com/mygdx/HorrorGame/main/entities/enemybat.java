@@ -72,6 +72,6 @@ public abstract class enemybat extends B2DSprite {
 
     }
 
-    public void collectHealth(){ numHealth++;}
+
     public int getNumHealth(){return numHealth;}
 }

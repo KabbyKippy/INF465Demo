@@ -12,6 +12,8 @@ public class MyContactListener implements ContactListener{
 
 
     private int numFootContact;
+    public boolean injured = false;
+    public boolean dead = false;
     private Array<Body> bodiesToRemove;
    // Called when two fixtues start to collide with each other
 
@@ -25,7 +27,7 @@ public class MyContactListener implements ContactListener{
 
 
 
-    public void beginContact(Contact c){
+    public void beginContact(Contact c) {
 
 
         Fixture fa = c.getFixtureA();
@@ -33,13 +35,15 @@ public class MyContactListener implements ContactListener{
 
 
         // determines if the player is on the ground
-        if(fa == null || fb == null){return;}
-        if(fa.getUserData() != null && fa.getUserData().equals("foot")){
+        if (fa == null || fb == null) {
+            return;
+        }
+        if (fa.getUserData() != null && fa.getUserData().equals("foot")) {
 
             numFootContact++;
 
         }
-        if(fb.getUserData() != null && fb.getUserData().equals("foot")){
+        if (fb.getUserData() != null && fb.getUserData().equals("foot")) {
 
             numFootContact++;
 
@@ -47,17 +51,47 @@ public class MyContactListener implements ContactListener{
         //.out.println( fa.getUserData() + "," + fb.getUserData()); // when you run this you see that fa is the ground and fb is the box then the ground
 
 
-        if(fa.getUserData() != null && fa.getUserData().equals("lantern")){
+        if (fa.getUserData() != null && fa.getUserData().equals("lantern")) {
 
             // remove crystal
             bodiesToRemove.add(fa.getBody());
 
         }
-        if(fb.getUserData() != null && fb.getUserData().equals("lantern")){
+        if (fb.getUserData() != null && fb.getUserData().equals("lantern")) {
 
             bodiesToRemove.add(fb.getBody());
 
         }
+
+
+        if(fa.getUserData() != null && fa.getUserData().equals("enemy") && fb.getUserData() != null && fb.getUserData().equals("player"))
+        {
+            injured = true;
+            System.out.println("I'm being touched right now.");
+        }
+
+        if (fb.getUserData() != null && fb.getUserData().equals("enemy") && fa.getUserData() != null && fa.getUserData().equals("player") )
+        {
+            injured = true;
+            System.out.println("I'm being touched right now.");
+        }
+        /*
+        if(fa.getUserData() != null && fa.getUserData().equals("enemy") && fb.getUserData() != null && fb.getUserData().equals("player")&& MyInput.isDown(MyInput.BUTTON4))
+        {
+
+            System.out.println("bang bang");
+            dead = true;
+            bodiesToRemove.add(fa.getBody());
+        }
+
+        if (fb.getUserData() != null && fb.getUserData().equals("enemy") && fa.getUserData() != null && fa.getUserData().equals("player")&& MyInput.isDown(MyInput.BUTTON4))
+        {
+
+            System.out.println("bang bang");
+            dead = true;
+            bodiesToRemove.add(fb.getBody());
+        }*/
+
         if(fb.getUserData() != null && fb.getUserData().equals("")){
 
             numFootContact++;
@@ -87,6 +121,21 @@ public class MyContactListener implements ContactListener{
             numFootContact--;
 
         }
+
+
+        if(fa.getUserData() != null && fa.getUserData().equals("enemy") && fb.getUserData() != null && fb.getUserData().equals("player"))
+        {
+            injured = false;
+            System.out.println("I'm being hurt right now.");
+        }
+
+        if (fb.getUserData() != null && fb.getUserData().equals("enemy") && fa.getUserData() != null && fa.getUserData().equals("player"))
+        {
+            injured = false;
+            System.out.println("I'm being hurt right now.");
+        }
+
+
 
     }
 

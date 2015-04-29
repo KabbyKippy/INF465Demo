@@ -15,7 +15,7 @@ import com.mygdx.HorrorGame.main.states.Play;
 
 public class Player extends B2DSprite {
     boolean finAtt = false;
-    boolean right = false;
+    public boolean right = false;
     long startTime;
     long endTime;
     private int numHealth;
@@ -227,5 +227,6 @@ public class Player extends B2DSprite {
     public int getNumHealth(){return numHealth;}
     public boolean damaged(){
         System.out.println("I'm being hurt right now.");
+        return true;
     }
 }

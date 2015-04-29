@@ -14,7 +14,7 @@ public class Items extends B2DSprite{
     public Items(Body body){
 
         super(body);
-            Texture tex = MyHorrorGame.res.getTexture("Item1");
+        Texture tex = MyHorrorGame.res.getTexture("Item1");
         TextureRegion[] sprites = TextureRegion.split(tex, 16,16)[0];
         setAnimation(sprites, 1/12f);
 
