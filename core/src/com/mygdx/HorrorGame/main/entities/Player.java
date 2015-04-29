@@ -1,7 +1,9 @@
 package com.mygdx.HorrorGame.main.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -58,7 +60,7 @@ public class Player extends B2DSprite {
                 {
                     Texture tex = MyHorrorGame.res.getTexture("PlayerATKRight");
                     TextureRegion[] sprites = TextureRegion.split(tex, 80, 40)[0];
-
+                    Gdx.audio.newSound(Gdx.files.internal("Resources/SFX/playerattack.mp3")).play();
                     setAnimation(sprites, 1 / 12f);
                 }
 
@@ -66,7 +68,7 @@ public class Player extends B2DSprite {
                 {
                     Texture tex = MyHorrorGame.res.getTexture("PlayerATKLeft");
                     TextureRegion[] sprites = TextureRegion.split(tex, 80, 40)[0];
-
+                    Gdx.audio.newSound(Gdx.files.internal("Resources/SFX/playerattack.mp3")).play();
                     setAnimation(sprites, 1 / 12f);
                 }
 
@@ -79,38 +81,41 @@ public class Player extends B2DSprite {
 
         }
 
-        if(MyInput.isPressed(MyInput.BUTTON4) && MyInput.wasPressed(MyInput.BUTTON3))
+        if (MyInput.isDown(MyInput.BUTTON4) && MyInput.isDown(MyInput.BUTTON3))
         {
             if(finAtt == false)
             {
                 finAtt = true;
                 right = true;
-                Texture tex = MyHorrorGame.res.getTexture("PlayerATKRight");
+                Texture tex = MyHorrorGame.res.getTexture("PlayerDashATKRight");
 
-                TextureRegion[] sprites = TextureRegion.split(tex, 80, 40)[0];
+                TextureRegion[] sprites = TextureRegion.split(tex, 80, 50)[0];
 
                 setAnimation(sprites, 1 / 12f);
 
 
-                System.out.println("I'm attacking right" + " ");
+                System.out.println("I'm dash attacking right" + " ");
             }
 
         }
 
-        if(MyInput.isPressed(MyInput.BUTTON4) && MyInput.wasPressed(MyInput.BUTTON2))
+
+        // DASH ATTACK HERE
+        /*
+        if(MyInput.isDown(MyInput.BUTTON4) && MyInput.isDown(MyInput.BUTTON2))
         {
             if(finAtt == false)
             {
                 finAtt = true;
                 right = false;
-                Texture tex = MyHorrorGame.res.getTexture("PlayerATKLeft");
+                Texture tex = MyHorrorGame.res.getTexture("PlayerDashATKLeft");
 
-                TextureRegion[] sprites = TextureRegion.split(tex, 80, 40)[0];
+                TextureRegion[] sprites = TextureRegion.split(tex, 80, 50)[0];
 
                 setAnimation(sprites, 1 / 12f);
 
 
-                System.out.println("I'm attacking left" + " ");
+                System.out.println("I'm dash attacking left" + " ");
             }
 
         }
@@ -128,6 +133,7 @@ public class Player extends B2DSprite {
             System.out.println("I'm jumping right");
             right = true;
         }
+        */
         if(MyInput.isPressed(MyInput.BUTTON1) && MyInput.wasPressed(MyInput.BUTTON2)) {
             startTime = System.nanoTime();
             right = false;

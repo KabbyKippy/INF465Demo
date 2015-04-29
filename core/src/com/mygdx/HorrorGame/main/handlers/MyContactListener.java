@@ -1,5 +1,6 @@
 package com.mygdx.HorrorGame.main.handlers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
@@ -68,19 +69,21 @@ public class MyContactListener implements ContactListener{
 
         if(fa.getUserData() != null && fa.getUserData().equals("enemy") && fb.getUserData() != null && fb.getUserData().equals("player"))
         {
+            Gdx.audio.newSound(Gdx.files.internal("Resources/SFX/enemyhit.mp3")).play();
             injured = true;
             System.out.println("I'm being touched right now.");
         }
 
         if (fb.getUserData() != null && fb.getUserData().equals("enemy") && fa.getUserData() != null && fa.getUserData().equals("player") )
         {
+            Gdx.audio.newSound(Gdx.files.internal("Resources/SFX/enemyhit.mp3")).play();
             injured = true;
             System.out.println("I'm being touched right now.");
         }
 
         if(fa.getUserData() != null && fa.getUserData().equals("enemy") && fb.getUserData() != null && fb.getUserData().equals("player")&& MyInput.isDown(MyInput.BUTTON4))
         {
-
+            Gdx.audio.newSound(Gdx.files.internal("Resources/SFX/playerhit.mp3")).play();
             System.out.println("bang bang");
             dead = true;
           EnemyToRemove.add(fa.getBody());

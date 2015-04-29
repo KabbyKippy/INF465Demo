@@ -39,6 +39,7 @@ public class Play extends GameState {
     private World world;
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("Resources/Music/level1.mp3"));
 
+
     // This renders all the bodies we use for box2d
     private Box2DDebugRenderer b2dr;
     private boolean debug = false;
@@ -56,6 +57,8 @@ public class Play extends GameState {
     private enemybat bat2;
     private enemybat bat3;
     private enemytengu tengu;
+    private boolean turnAround;
+    private int steps;
     //private Array<enemybat> bat;
     private Array<Items> Item;
 
@@ -83,6 +86,7 @@ public class Play extends GameState {
         music.setVolume(0.5f);
         music.setLooping(true);
         music.play();
+        turnAround = false;
 
         // Create tiles
         createTiles();
@@ -100,6 +104,7 @@ public class Play extends GameState {
         b2dCam = new OrthographicCamera();
         b2dCam.setToOrtho(false, MyHorrorGame.V_WIDTH / PPM, MyHorrorGame.V_HEIGHT / PPM);
 
+
         //////////////////////////////////////////////////////////////////////
 
 
@@ -114,6 +119,7 @@ public class Play extends GameState {
         // player jump
         if (MyInput.isPressed(MyInput.BUTTON1)) {
             if (cl.isPlayerOnGround()) { //check to see if the foot i s acutally on the ground
+                Gdx.audio.newSound(Gdx.files.internal("Resources/SFX/playerjump.mp3")).play();
                 player.getBody().applyForceToCenter(0, 225, true); // the player can jump a force of 200N upwards
 
             }
@@ -236,15 +242,37 @@ public class Play extends GameState {
 
         }
         bodies.clear();
-        bat1.update(dt);
-        bat1.getBody().setLinearVelocity(20 / PPM, 10 / PPM);
-        bat2.update(dt);
-        bat2.getBody().setLinearVelocity(-20 / PPM, 10 / PPM);
-        bat3.update(dt);
-        bat3.getBody().setLinearVelocity(40 / PPM, 10 / PPM);
-        player.update(dt);
-        tengu.getBody().setLinearVelocity(40 / PPM, 0 / PPM);
-        tengu.update(dt);
+
+        if( steps < 400)
+        {
+            steps += 1;
+           // System.out.println("The step count is: " + " " + steps);
+            bat1.update(dt);
+            bat1.getBody().setLinearVelocity(20 / PPM, 10 / PPM);
+            bat2.update(dt);
+            bat2.getBody().setLinearVelocity(-20 / PPM, 10 / PPM);
+            bat3.update(dt);
+            bat3.getBody().setLinearVelocity(40 / PPM, 10 / PPM);
+            player.update(dt);
+            tengu.getBody().setLinearVelocity(40 / PPM, 10 / PPM);
+            tengu.update(dt);
+        }
+        else if((steps >= 400))
+        {
+            steps += 1;
+           // System.out.println("Now the step count is " + " " + steps);
+            bat1.update(dt);
+            bat1.getBody().setLinearVelocity(-20 / PPM, 10 / PPM);
+            bat2.update(dt);
+            bat2.getBody().setLinearVelocity(20 / PPM, 10 / PPM);
+            bat3.update(dt);
+            bat3.getBody().setLinearVelocity(-40 / PPM, 10 / PPM);
+            player.update(dt);
+            tengu.getBody().setLinearVelocity(-40 / PPM, 10 / PPM);
+            tengu.update(dt);
+
+            if(steps > 600) steps = 0;
+        }
         Array<Body> denemy = cl.getEnemyToRemove();
         for ( int i =0 ; i< denemy.size; i++){
             Body E = denemy.get(i);
@@ -265,6 +293,8 @@ public class Play extends GameState {
 
             if(player.right == false)
                 player.getBody().setLinearVelocity(300 / PPM, 100 / PPM);
+
+
 
             //player.getBody().setLinearVelocity(0 / PPM, 0 / PPM);
         }
@@ -321,6 +351,7 @@ public class Play extends GameState {
         Body body2 = world.createBody(edef2);
         edef3.type = BodyDef.BodyType.DynamicBody;
         edef3.linearVelocity.set(-3,3);
+
         Body body3 = world.createBody(edef3);
         Body body4 = world.createBody(edef4);
         edef4.type = BodyDef.BodyType.DynamicBody;
