@@ -56,6 +56,7 @@ public class Play extends GameState {
     private enemybat bat2;
     private enemybat bat3;
     private enemytengu tengu;
+    //private Array<enemybat> bat;
     private Array<Items> Item;
 
     private BackGround[] backgrounds;
@@ -160,6 +161,7 @@ public class Play extends GameState {
         // Set Camera To follow player
         cam.position.set(player.getPosition().x * PPM ,player.getPosition().y * PPM,0);//MyHorrorGame.V_HEIGHT/2,0);
         cam.update();
+        //System.out.println(player.getPosition().x + "           " + player.getPosition().y );
 
 
 
@@ -176,11 +178,22 @@ public class Play extends GameState {
         // draw player
         sb.setProjectionMatrix(cam.combined);
         player.render(sb);
-        bat1.render(sb);
-        bat2.render(sb);
-        bat3.render(sb);
-        //tengu.render(sb);
+        if(bat1.getBody().getUserData() != null){
+        bat1.render(sb);}
+        if(bat2.getBody().getUserData() != null){
+            bat2.render(sb);}
+        if (bat3.getBody().getUserData() != null){
+            bat3.render(sb);}
+        if(tengu.getBody().getUserData() != null)
+        {  tengu.render(sb);}
+       // bat2.render(sb);
+        //bat3.render(sb);
+        //
+        /*for( int i = 0; i< bat.size; i++){
+            bat.get(i).render(sb);
 
+
+        }*/
 
 
         // items
@@ -226,21 +239,27 @@ public class Play extends GameState {
         bat1.update(dt);
         bat1.getBody().setLinearVelocity(20 / PPM, 10 / PPM);
         bat2.update(dt);
-        bat2.getBody().setLinearVelocity(-20 / PPM,10 / PPM);
+        bat2.getBody().setLinearVelocity(-20 / PPM, 10 / PPM);
         bat3.update(dt);
-        bat3.getBody().setLinearVelocity(40 / PPM,10 / PPM);
+        bat3.getBody().setLinearVelocity(40 / PPM, 10 / PPM);
         player.update(dt);
+        tengu.getBody().setLinearVelocity(40 / PPM, 0 / PPM);
+        tengu.update(dt);
+        Array<Body> denemy = cl.getEnemyToRemove();
+        for ( int i =0 ; i< denemy.size; i++){
+            Body E = denemy.get(i);
+
+
+            world.destroyBody(E);
+
+            //player.collectHealth();
+
+
+        }
 
         if(cl.injured == true && !MyInput.isDown(MyInput.BUTTON4))
         {
 
-            if(MyInput.wasPressed(MyInput.BUTTON4))
-            {
-
-                System.out.println("You're dead");
-                //world.destroyBody(bat1.getBody());
-
-            }
             if(player.right == true)
                 player.getBody().setLinearVelocity(-300 / PPM, 100 / PPM);
 
@@ -277,6 +296,7 @@ public class Play extends GameState {
         BodyDef edef = new BodyDef();
         BodyDef edef2 = new BodyDef();
         BodyDef edef3 = new BodyDef();
+        BodyDef edef4 = new BodyDef();
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
 
@@ -286,6 +306,7 @@ public class Play extends GameState {
         edef.position.set(3000/PPM, 2800/PPM);
         edef2.position.set(2600/PPM, 2800/PPM);
         edef3.position.set(3000/PPM, 2850/PPM);
+        edef4.position.set(3126/PPM , 1586/PPM);
 
 
 
@@ -300,8 +321,12 @@ public class Play extends GameState {
         Body body2 = world.createBody(edef2);
         edef3.type = BodyDef.BodyType.DynamicBody;
         edef3.linearVelocity.set(-3,3);
-
         Body body3 = world.createBody(edef3);
+        Body body4 = world.createBody(edef4);
+        edef4.type = BodyDef.BodyType.DynamicBody;
+        edef4.linearVelocity.set(-3,3);
+
+
 
         // create enemy
 
@@ -324,6 +349,7 @@ public class Play extends GameState {
         body.createFixture(fdef).setUserData("enemy"); // sets it as the box
         body2.createFixture(fdef).setUserData("enemy");
         body3.createFixture(fdef).setUserData("enemy");
+        body4.createFixture(fdef).setUserData("enemyt");
 
 
         // Create Foot Sensor creates the foot of the player
@@ -335,6 +361,7 @@ public class Play extends GameState {
         body.createFixture(fdef).setUserData("hit");
         body2.createFixture(fdef).setUserData("hit");
         body3.createFixture(fdef).setUserData("hit");
+        body4.createFixture(fdef).setUserData("hit");
 
 
 
@@ -343,9 +370,11 @@ public class Play extends GameState {
         bat1 = new enemybat(body);
         body.setUserData(bat1);
         bat2 = new enemybat(body2);
-        body.setUserData(bat2);
+        body2.setUserData(bat2);
         bat3 = new enemybat(body3);
-        body.setUserData(bat3);
+        body3.setUserData(bat3);
+        tengu = new enemytengu(body4);
+        body4.setUserData(tengu);
 
 
 

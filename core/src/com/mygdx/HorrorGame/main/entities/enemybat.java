@@ -13,42 +13,9 @@ import com.mygdx.HorrorGame.main.states.Play;
 /**
  * Created by NanoUnit on 4/2/2015.
  */
-public abstract class enemybat extends B2DSprite {
+public  class enemybat extends B2DSprite {
 
     protected int health;
-    protected  int maxHealth;
-    protected boolean dead;
-    protected  int damage;
-    protected boolean flintching;
-    protected  long flintchTimer;
-
-    public Enemy(TiledMap tm)
-    {
-        super(tm)
-
-
-
-
-    }
-    public boolean isDead(){return dead;}
-    public int getDamage() {return damage;}
-    public void hit(int damage)
-    {
-        if (dead || flintching )return;
-        health -= damage;
-        if(health < 0) health =0;
-        if (health == 0) dead = true;
-        flintching = true;
-        flintching = System.nanoTime();
-
-
-
-    }
-
-
-
-
-
 
     public enemybat(Body body){
         super(body);
@@ -73,5 +40,5 @@ public abstract class enemybat extends B2DSprite {
     }
 
 
-    public int getNumHealth(){return numHealth;}
+    //public int getNumHealth(){return numHealth;}
 }

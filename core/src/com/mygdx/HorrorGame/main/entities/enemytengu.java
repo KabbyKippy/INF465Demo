@@ -14,9 +14,9 @@ public class enemytengu extends B2DSprite{
     public enemytengu(Body body){
         super(body);
 
-        Texture tex = MyHorrorGame.res.getTexture("enemy");
+        Texture tex = MyHorrorGame.res.getTexture("tengu");
 
-        TextureRegion[] sprites = TextureRegion.split(tex, 55, 40)[0];
+        TextureRegion[] sprites = TextureRegion.split(tex, 30, 30)[0];
         setAnimation(sprites, 1 / 10f);
 
 

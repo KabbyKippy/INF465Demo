@@ -15,11 +15,13 @@ public class MyContactListener implements ContactListener{
     public boolean injured = false;
     public boolean dead = false;
     private Array<Body> bodiesToRemove;
+    private Array<Body> EnemyToRemove;
    // Called when two fixtues start to collide with each other
 
     public  MyContactListener(){
         super();
         bodiesToRemove = new Array<Body>();
+        EnemyToRemove = new Array<Body>();
 
 
 
@@ -75,13 +77,13 @@ public class MyContactListener implements ContactListener{
             injured = true;
             System.out.println("I'm being touched right now.");
         }
-        /*
+
         if(fa.getUserData() != null && fa.getUserData().equals("enemy") && fb.getUserData() != null && fb.getUserData().equals("player")&& MyInput.isDown(MyInput.BUTTON4))
         {
 
             System.out.println("bang bang");
             dead = true;
-            bodiesToRemove.add(fa.getBody());
+          EnemyToRemove.add(fa.getBody());
         }
 
         if (fb.getUserData() != null && fb.getUserData().equals("enemy") && fa.getUserData() != null && fa.getUserData().equals("player")&& MyInput.isDown(MyInput.BUTTON4))
@@ -89,8 +91,8 @@ public class MyContactListener implements ContactListener{
 
             System.out.println("bang bang");
             dead = true;
-            bodiesToRemove.add(fb.getBody());
-        }*/
+           EnemyToRemove.add(fb.getBody());
+        }
 
         if(fb.getUserData() != null && fb.getUserData().equals("")){
 
@@ -143,6 +145,7 @@ public class MyContactListener implements ContactListener{
 
     public boolean isPlayerOnGround(){return numFootContact > 0;}
     public Array<Body> getBodiesToRemove() {return bodiesToRemove;}
+    public Array<Body> getEnemyToRemove() {return EnemyToRemove;}
 
 
 
