@@ -170,7 +170,7 @@ public class Play extends GameState {
         // Set Camera To follow player
         cam.position.set(player.getPosition().x * PPM ,player.getPosition().y * PPM,0);//MyHorrorGame.V_HEIGHT/2,0);
         cam.update();
-        System.out.println(player.getPosition().x + "           " + player.getPosition().y );
+       // System.out.println(player.getPosition().x + "           " + player.getPosition().y );
 
 
 
@@ -256,40 +256,55 @@ public class Play extends GameState {
         {
             steps += 1;
            // System.out.println("The step count is: " + " " + steps);
+            if(bat1.getBody().getUserData() != null){
             bat1.update(dt);
-            bat1.getBody().setLinearVelocity(20 / PPM, 10 / PPM);
+            bat1.getBody().setLinearVelocity(20 / PPM, 10 / PPM);}
+            if(bat2.getBody().getUserData() != null){
             bat2.update(dt);
-            bat2.getBody().setLinearVelocity(-20 / PPM, 10 / PPM);
-            bat3.update(dt);
-            bat3.getBody().setLinearVelocity(40 / PPM, 10 / PPM);
-            player.update(dt);
+            bat2.getBody().setLinearVelocity(-20 / PPM, 10 / PPM);}
+            if(bat3.getBody().getUserData() != null) {
+                bat3.update(dt);
+                bat3.getBody().setLinearVelocity(40 / PPM, 10 / PPM);
+            }
+
+            if(tengu.getBody().getUserData() != null){
             tengu.getBody().setLinearVelocity(40 / PPM, 0);
-            tengu.update(dt);
+            tengu.update(dt);}
+            if(tengu2.getBody().getUserData() != null){
             tengu2.getBody().setLinearVelocity(40 / PPM, 0);
-            tengu2.update(dt);
+            tengu2.update(dt);}
+            if(tengu3.getBody().getUserData() != null){
             tengu3.getBody().setLinearVelocity(40 / PPM, 0);
-            tengu3.update(dt);
+            tengu3.update(dt);}
         }
         else if((steps >= 400))
         {
             steps += 1;
            // System.out.println("Now the step count is " + " " + steps);
+            if(bat1.getBody().getUserData() != null){
             bat1.update(dt);
-            bat1.getBody().setLinearVelocity(-20 / PPM, 10 / PPM);
+            bat1.getBody().setLinearVelocity(-20 / PPM, 10 / PPM);}
+            if(bat2.getBody().getUserData() != null){
             bat2.update(dt);
-            bat2.getBody().setLinearVelocity(20 / PPM, 10 / PPM);
+            bat2.getBody().setLinearVelocity(20 / PPM, 10 / PPM);}
+            if(bat3.getBody().getUserData() != null){
             bat3.update(dt);
-            bat3.getBody().setLinearVelocity(-40 / PPM, 10 / PPM);
-            player.update(dt);
+            bat3.getBody().setLinearVelocity(-40 / PPM, 10 / PPM);}
+
+
+            if(tengu.getBody().getUserData() != null){
             tengu.getBody().setLinearVelocity(-40 / PPM, 0);
-            tengu.update(dt);
+            tengu.update(dt);}
+            if(tengu2.getBody().getUserData() != null){
             tengu2.getBody().setLinearVelocity(-40 / PPM, 0);
-            tengu2.update(dt);
+            tengu2.update(dt);}
+            if(tengu3.getBody().getUserData() != null){
             tengu3.getBody().setLinearVelocity(-40 / PPM, 0);
-            tengu3.update(dt);
+            tengu3.update(dt);}
 
             if(steps > 600) steps = 0;
         }
+        player.update(dt);
         Array<Body> denemy = cl.getEnemyToRemove();
         for ( int i =0 ; i< denemy.size; i++){
             Body E = denemy.get(i);
